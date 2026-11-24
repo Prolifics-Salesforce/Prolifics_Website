@@ -1,0 +1,20 @@
+/* IBM and SAP credentials strip (both versions). Quiet by design: certifications and accolades only. */
+.stand{padding:64px 0;background:#fff;border-top:1px solid var(--line)}
+.stand.k{background:var(--warm,#F2F1EE);border-top:0}
+.sd-in{display:grid;grid-template-columns:minmax(220px,300px) 1fr;gap:40px;align-items:start}
+.sd-head .lab,.sd-head .kk{margin-bottom:10px}
+.sd-head h2{font-family:var(--disp);font-size:clamp(22px,2vw,28px);line-height:1.2;letter-spacing:-.02em;font-weight:600;color:var(--ink,#060A14)}
+.stand.k .sd-head h2{font-weight:400}
+.sd-g{display:grid;grid-template-columns:1fr 1fr;gap:16px}
+.sd{padding:22px 24px;border:1px solid var(--line);border-radius:16px;background:#fff}
+.stand.k .sd{border-radius:0}
+.sd-lg{display:block;height:26px;width:auto;margin-bottom:14px}
+.sd ul{display:grid;gap:2px}
+.sd li{display:flex;align-items:center;gap:10px;padding:7px 0;font-size:14.5px;line-height:1.35;color:var(--ink,#060A14);border-top:1px solid var(--line)}
+.sd li:first-child{border-top:0}
+.sd li svg{flex:none;width:20px;height:20px;fill:none;stroke:var(--navy,#001F5B);stroke-width:1.5;stroke-linecap:round;stroke-linejoin:round}
+.sd li.award svg{stroke:var(--cy,#00AEEF)}
+.sd li span{flex:1}
+.sd li b{flex:none;font-size:12.5px;font-weight:600;color:var(--mut);letter-spacing:.02em}
+@media (max-width:1100px){.sd-in{grid-template-columns:1fr;gap:20px}}
+@media (max-width:720px){.stand,.stand.k{padding:48px 0}.sd-g{grid-template-columns:1fr}.sd{padding:18px 18px}}

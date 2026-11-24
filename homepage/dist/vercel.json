@@ -1,0 +1,26 @@
+{
+ "headers": [
+  {
+   "source": "/(.*)",
+   "headers": [
+    {
+     "key": "X-Robots-Tag",
+     "value": "noindex, nofollow"
+    }
+   ]
+  }
+ ],
+ "trailingSlash": false,
+ "redirects": [
+  {
+   "source": "/solutions",
+   "destination": "/services",
+   "permanent": false
+  },
+  {
+   "source": "/solutions/:p*",
+   "destination": "/services",
+   "permanent": false
+  }
+ ]
+}

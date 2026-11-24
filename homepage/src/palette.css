@@ -1,0 +1,41 @@
+/* Palette pass, 22 Nov 2026. Mac: the 48 hero is approved, but black takes the charm out of it.
+   The hero moves to a light, warm white ground so the full color 48 carries the page. Dark surfaces elsewhere
+   use the Prolifics navy family instead of near black. Loaded last by every page. */
+:root{--deep:#00184A;--deep2:#002463;--cyd:#0077B6;--paper2:#F7F6F2}
+/* header stays light at all times; the utility strip is brand navy */
+.util{background:var(--deep);border-bottom-color:rgba(255,255,255,.1)}
+.top .hdr{background:rgba(255,255,255,.94);border-color:var(--line);color:var(--text)}
+.top .brand .lg-w{display:none}.top .brand .lg-c{display:block}
+.top .nv:hover,.top .nv[aria-expanded=true]{color:var(--cyd)}
+/* hero: light ground, full color 48 */
+.hero{background:linear-gradient(180deg,#FBFAF7 0%,#F3F1EC 100%);color:var(--text)}
+.hero:before{background:radial-gradient(90% 70% at 22% 40%,rgba(255,255,255,0),rgba(251,250,247,.72) 70%),linear-gradient(180deg,rgba(243,241,236,0) 70%,#F3F1EC)}
+.wash.on{opacity:.22}
+.wash{filter:blur(90px) saturate(1.6)}
+.aur i{mix-blend-mode:multiply;filter:blur(110px)}
+.aur i:nth-child(1){background:#7FD6F7;opacity:.32}
+.aur i:nth-child(2){background:#C9C2FF;opacity:.26}
+.aur i:nth-child(3){background:#9FC3F0;opacity:.3}
+.grain{opacity:.05;mix-blend-mode:multiply}
+.n48-o{-webkit-text-stroke:1.5px rgba(0,31,91,.14)}
+.n48-l{filter:saturate(1.08) contrast(1.04)}
+.n48-y{color:var(--cyd)}
+.h-kick{color:var(--mut)}.h-sep{background:rgba(0,31,91,.3)}
+.hero h1{color:var(--navy)}
+.hero h1 em{color:var(--cyd)}
+.hero .lead{color:#3D4556}
+.hero .btn-c{background:var(--navy);color:#fff}.hero .btn-c:hover{background:var(--cyd)}
+.hero .btn-gl{border-color:rgba(0,31,91,.28);color:var(--navy)}.hero .btn-gl:hover{border-color:var(--navy);background:rgba(0,31,91,.04)}
+.era{border-top-color:rgba(0,31,91,.14)}
+.era-y{color:var(--cyd)}.era-t{color:var(--navy)}.era-d{color:var(--mut)}
+.tk{color:var(--mut2)}.tk:hover,.tk.on,.tk.done{color:var(--navy)}
+.tk-bar{background:rgba(0,31,91,.12)}.tk-bar i{background:var(--cyd)}
+/* dark sections: brand navy instead of black */
+.fde{background:linear-gradient(160deg,var(--deep) 0%,var(--deep2) 100%)}
+.grp,.cta{background:var(--deep)}
+.ftr{background:var(--deep)}
+.cs,.it{background:var(--deep)}
+.btn-p{background:var(--navy)}.btn-p:hover{background:var(--cyd)}
+/* 48 fill (22 Nov 2026): the photo layer spans the whole numeral so the 8 is never clipped, and is zoomed less so it stays sharp */
+.n48-l{right:0;bottom:0;background-size:135% auto}
+@keyframes kb{from{background-size:150% auto;background-position:42% 45%}to{background-size:122% auto;background-position:55% 55%}}

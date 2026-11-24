@@ -1,0 +1,207 @@
+{
+  "generated": "2026-11-12",
+  "folder": "/Users/lemniscate/Documents/prolifics/assets/clients",
+  "found": [
+    {
+      "name": "Teradyne",
+      "slug": "teradyne",
+      "file": "teradyne.svg",
+      "source_url": "https://upload.wikimedia.org/wikipedia/commons/0/04/Teradyne_logo_2014.svg",
+      "format": "svg",
+      "width": 432.0,
+      "height": 64.9,
+      "notes": "Wikimedia Commons (Teradyne Wikipedia infobox). Same artwork as the current teradyne.com header (2026/03 teradyne-logo-blue.svg). Width/height are SVG viewBox units."
+    },
+    {
+      "name": "Zions Bancorporation",
+      "slug": "zions-bancorporation",
+      "file": "zions-bancorporation.svg",
+      "source_url": "https://upload.wikimedia.org/wikipedia/commons/4/4d/Zions_Bancorporation_Logo.svg",
+      "format": "svg",
+      "width": 320.0,
+      "height": 20.0,
+      "notes": "Wikimedia Commons (Wikipedia infobox). Holding company wordmark, not the Zions Bank subsidiary mark. Width/height are SVG viewBox units."
+    },
+    {
+      "name": "Intealth (formerly ECFMG)",
+      "slug": "intealth",
+      "file": "intealth.svg",
+      "source_url": "https://upload.wikimedia.org/wikipedia/commons/3/33/ECFMG_logo.svg",
+      "format": "svg",
+      "width": 825.6,
+      "height": 261.8,
+      "notes": "Wikimedia Commons. This is the 'ECFMG, A Division of Intealth' lockup with the Intealth symbol, not the standalone Intealth master logo. intealth.org and ecfmg.org return 403 to automated requests, so the master logo could not be fetched. Width/height are SVG viewBox units."
+    },
+    {
+      "name": "CMC Energy Services",
+      "slug": "cmc-energy-services",
+      "file": "cmc-energy-services.png",
+      "source_url": "https://cmcenergy.com/wp-content/uploads/2025/06/CMC2023_logoColor-REV-GREEN.png",
+      "format": "png",
+      "width": 250,
+      "height": 216,
+      "notes": "Official site header (2023 logo). Largest version on the site is 250px wide, below the 300px target; fine at 48px display height. No Wikipedia logo exists."
+    },
+    {
+      "name": "EmblemHealth",
+      "slug": "emblemhealth",
+      "file": "emblemhealth.png",
+      "source_url": "https://upload.wikimedia.org/wikipedia/commons/2/21/EmblemHealth.png",
+      "format": "png",
+      "width": 881,
+      "height": 136,
+      "notes": "Wikimedia Commons (Wikipedia infobox)."
+    },
+    {
+      "name": "Horizon Blue Cross Blue Shield of New Jersey",
+      "slug": "horizon-bcbs-nj",
+      "file": "horizon-bcbs-nj.png",
+      "source_url": "https://media.ceros.com/horizon-blue/images/2024/01/23/de984c0c002708bc9aca368bd51d88c1/hbcbsnj-clsdgap.jpg",
+      "format": "png",
+      "width": 1900,
+      "height": 405,
+      "notes": "Horizon's own Ceros-hosted asset used on learnmore.horizonblue.com (alt text 'Horizon Blue Cross Blue Shield of New Jersey logo'). File is PNG data served with a .jpg name; saved as .png unchanged. horizonblue.com is behind Incapsula bot protection; no Wikimedia file exists."
+    },
+    {
+      "name": "Queen Mary University of London",
+      "slug": "queen-mary-university-of-london",
+      "file": "queen-mary-university-of-london.svg",
+      "source_url": "https://upload.wikimedia.org/wikipedia/en/3/38/Queen_Mary_University_of_London_logo.svg",
+      "format": "svg",
+      "width": 217.6,
+      "height": 57.8,
+      "notes": "English Wikipedia file (non-free logo). The infobox shows the coat of arms; this is the wordmark logo. Width/height are SVG viewBox units."
+    },
+    {
+      "name": "Broadridge Financial Solutions",
+      "slug": "broadridge",
+      "file": "broadridge.svg",
+      "source_url": "https://upload.wikimedia.org/wikipedia/commons/4/41/Logo_for_Broadridge_2024.svg",
+      "format": "svg",
+      "width": 336.0,
+      "height": 72.0,
+      "notes": "Wikimedia Commons, 2024 logo (Wikipedia infobox). Width/height are SVG viewBox units."
+    },
+    {
+      "name": "Motability Operations",
+      "slug": "motability-operations",
+      "file": "motability-operations.svg",
+      "source_url": "https://www.mo.co.uk/images/mo-logo.svg",
+      "format": "svg",
+      "width": 104.0,
+      "height": 37.0,
+      "notes": "Official mo.co.uk header logo. Only a reversed white version is published (fill #fff), so it is invisible on white; shown on a dark tile in the sheet. On light backgrounds use a dark tile or CSS filter. Not the Motability charity or Motability Scheme logo. Width/height are SVG viewBox units."
+    },
+    {
+      "name": "RAC (UK motoring)",
+      "slug": "rac",
+      "file": "rac.svg",
+      "source_url": "https://upload.wikimedia.org/wikipedia/en/e/e5/RAC_Limited_%28logo%29.svg",
+      "format": "svg",
+      "width": 39.43,
+      "height": 13.41,
+      "notes": "English Wikipedia file (RAC Limited infobox). Width/height are SVG viewBox units."
+    },
+    {
+      "name": "Watts Water Technologies",
+      "slug": "watts-water-technologies",
+      "file": "watts-water-technologies.png",
+      "source_url": "https://upload.wikimedia.org/wikipedia/en/8/87/Watts_logo.png",
+      "format": "png",
+      "width": 300,
+      "height": 75,
+      "notes": "English Wikipedia file. 300px wide, no SVG available; watts.com returns 403 to automated requests."
+    },
+    {
+      "name": "American Bureau of Shipping (ABS)",
+      "slug": "american-bureau-of-shipping",
+      "file": "american-bureau-of-shipping.svg",
+      "source_url": "https://ww2.eagle.org/content/dam/eagle/logos/trademark/abs-blue/abs-logo-blue.svg",
+      "format": "svg",
+      "width": 238.22,
+      "height": 89.78,
+      "notes": "Official ABS asset library (eagle.org trademark folder), blue version. Chosen over the Wikipedia 505px JPG. Width/height are SVG viewBox units."
+    },
+    {
+      "name": "Close Brothers",
+      "slug": "close-brothers",
+      "file": "close-brothers.jpg",
+      "source_url": "https://upload.wikimedia.org/wikipedia/commons/2/22/CB_CMYK_POS.jpg",
+      "format": "jpeg",
+      "width": 781,
+      "height": 129,
+      "notes": "Wikimedia Commons. CMYK JPEG on white, dated 2011 in its metadata; closebrothers.com is JS-rendered so the live header logo could not be pulled. Worth confirming against the current site."
+    },
+    {
+      "name": "McKesson",
+      "slug": "mckesson",
+      "file": "mckesson.svg",
+      "source_url": "https://upload.wikimedia.org/wikipedia/commons/d/d9/McKesson_logo.svg",
+      "format": "svg",
+      "width": 300.0,
+      "height": 40.86,
+      "notes": "Wikimedia Commons (Wikipedia infobox). Width/height are SVG viewBox units."
+    },
+    {
+      "name": "Mastercard",
+      "slug": "mastercard",
+      "file": "mastercard.svg",
+      "source_url": "https://upload.wikimedia.org/wikipedia/commons/a/a4/Mastercard_2019_logo.svg",
+      "format": "svg",
+      "width": 1000.0,
+      "height": 618.0,
+      "notes": "Wikimedia Commons. 2019 symbol-only brand mark (interlocking circles, no wordmark), which is Mastercard's current primary mark. Width/height are SVG viewBox units."
+    },
+    {
+      "name": "The Insolvency Service (UK government)",
+      "slug": "insolvency-service",
+      "file": "insolvency-service.svg",
+      "source_url": "https://upload.wikimedia.org/wikipedia/en/0/05/Insolvency.svg",
+      "format": "svg",
+      "width": 581.0,
+      "height": 303.6,
+      "notes": "English Wikipedia file. Royal arms crest plus agency name in the GOV.UK style. Width/height are SVG viewBox units."
+    },
+    {
+      "name": "Intuitive Surgical",
+      "slug": "intuitive-surgical",
+      "file": "intuitive-surgical.svg",
+      "source_url": "https://upload.wikimedia.org/wikipedia/commons/0/01/Intuitive_Surgical_logo.svg",
+      "format": "svg",
+      "width": 45.83,
+      "height": 18.31,
+      "notes": "Wikimedia Commons. The company now trades as 'Intuitive'; check against intuitive.com before use. Width/height are SVG viewBox units."
+    },
+    {
+      "name": "Nutrien",
+      "slug": "nutrien",
+      "file": "nutrien.svg",
+      "source_url": "https://upload.wikimedia.org/wikipedia/commons/5/5f/Nutrien_Logo.svg",
+      "format": "svg",
+      "width": 596.7,
+      "height": 134.5,
+      "notes": "Wikimedia Commons (Wikipedia infobox). Width/height are SVG viewBox units."
+    },
+    {
+      "name": "GSK",
+      "slug": "gsk",
+      "file": "gsk.svg",
+      "source_url": "https://www.gsk.com/nuxtassets/icons/gsk-logo.svg",
+      "format": "svg",
+      "width": 106.0,
+      "height": 33.0,
+      "notes": "Official gsk.com header SVG, 2022 orange logo. Chosen over the Wikipedia file, which wraps an embedded raster in an SVG (1.5 MB). Width/height are SVG viewBox units."
+    },
+    {
+      "name": "Cancer Research UK",
+      "slug": "cancer-research-uk",
+      "file": "cancer-research-uk.svg",
+      "source_url": "https://upload.wikimedia.org/wikipedia/en/4/43/Cancer_Research_UK.svg",
+      "format": "svg",
+      "width": 200.0,
+      "height": 77.39,
+      "notes": "English Wikipedia file (infobox). Width/height are SVG viewBox units."
+    }
+  ],
+  "missing": []
+}

@@ -1,0 +1,7 @@
+dist-k/
+__pycache__/
+.vercel/
+.claude/
+.DS_Store
+ref/*.html
+ref/cs/*.html

@@ -1,0 +1,269 @@
+{
+ "_source": "Copied 22 Nov 2026 from ~/Documents/prolifics/gtm/sites/content/salesforce.json (the Salesforce GTM microsite content). Stats carry their own source links.",
+ "stats": [
+  {
+   "n": "$1.5B<small>+</small>",
+   "t": "Agentforce annual recurring revenue, up more than 240% year over year on a widened definition",
+   "s": "Salesforce FY27 Q2 results, 26 August 2026",
+   "u": "https://www.salesforce.com/news/press-releases/2026/08/26/fy27-q2-earnings/"
+  },
+  {
+   "n": "70%",
+   "t": "Share of Agentforce implementations led by Salesforce partners",
+   "s": "Salesforce partner program release, 10 March 2026",
+   "u": "https://www.salesforce.com/ap/news/press-releases/2026/03/10/the-outcome-advantage-driving-customer-value-through-the-new-salesforce-partner-program/"
+  },
+  {
+   "n": "96%",
+   "t": "IT leaders who say AI agent success depends on data integration across systems",
+   "s": "MuleSoft 2026 Connectivity Benchmark",
+   "u": "https://www.mulesoft.com/lp/kit/connectivity-benchmark"
+  },
+  {
+   "n": "95%",
+   "t": "Enterprise generative AI pilots with no measurable P&L impact, per MIT NANDA",
+   "s": "Fortune on MIT NANDA, The GenAI Divide, 18 August 2025",
+   "u": "https://fortune.com/2025/08/18/mit-report-95-percent-generative-ai-pilots-at-companies-failing-cfo/"
+  }
+ ],
+ "ai_first": [
+  {
+   "icon": "agent",
+   "t": "Actions, not just answers",
+   "d": "An agent that summarizes a record saves minutes. One that updates a policy, opens a dispute in the core system or issues a quote changes a process. That takes integration, permissions and testing."
+  },
+  {
+   "icon": "data",
+   "t": "Data 360 as the context layer",
+   "d": "Agents reason over what they can see. We design Data 360 models, zero copy connections and identity resolution so the agent sees the customer your best employee would see."
+  },
+  {
+   "icon": "integration",
+   "t": "Integration is the critical path",
+   "d": "Pilots tend to stall on access to core systems, not on prompts. MuleSoft, Agent Fabric and your existing middleware decide how far an agent can go."
+  },
+  {
+   "icon": "testing",
+   "t": "Evaluation before exposure",
+   "d": "We test agents like products: scripted conversations, adversarial prompts, regression on each Salesforce release, and a pass mark the business agrees before launch."
+  },
+  {
+   "icon": "compliance",
+   "t": "Controls regulators recognize",
+   "d": "Human approval steps, audit logs, data residency and least-privilege access are designed in the first sprint, because banks, insurers and health plans cannot retrofit them."
+  },
+  {
+   "icon": "dashboard",
+   "t": "Measured in production",
+   "d": "Every agent ships with a KPI baseline and a run book. After go-live we track resolution, cost per action and drift, and report them to you on a fixed cadence."
+  }
+ ],
+ "offers": [
+  {
+   "slug": "staff-augmentation",
+   "name": "Salesforce staff augmentation",
+   "icon": "augment",
+   "summary": "Certified Salesforce architects, developers, admins, analysts and QA engineers who join your team, onshore or from Hyderabad and Pune, fluent in Agentforce and backed by the Prolifics practice.",
+   "nav": "Certified Salesforce talent for your team",
+   "scope": [
+    "Salesforce and Agentforce architects for solution, data and integration design",
+    "Developers for Apex, Lightning Web Components, Flow and agent actions",
+    "Administrators for configuration, security, permission sets and release support",
+    "Business analysts who turn process knowledge into user stories and agent topics"
+   ],
+   "entry": {
+    "name": "Two Week Team Match",
+    "length": "2 weeks",
+    "d": "We turn your Salesforce backlog into role profiles, shortlist certified candidates, run interviews with your team and agree a start plan for the people you choose."
+   }
+  },
+  {
+   "slug": "forward-deployed-engineers",
+   "name": "Salesforce forward deployed engineers",
+   "icon": "pod",
+   "summary": "A small senior pod embedded with your business owner that puts one Agentforce workflow into production at a time, with weekly demos in your org and evaluation from week one.",
+   "nav": "Senior pods that ship Agentforce workflows",
+   "scope": [
+    "Onshore FDE lead who sits with your business owner at least two days a week",
+    "Deployment strategist who owns the problem definition and adoption",
+    "Build squad in Hyderabad or Pune for topics, actions, Flow, Apex and integrations",
+    "Evaluation engineer from Prolifics Testing from week one"
+   ],
+   "entry": {
+    "name": "FDE Production Sprint",
+    "length": "6 weeks",
+    "d": "A senior pod embeds with your business owner and puts one Agentforce workflow into production in your org, measured against a baseline signed in week one."
+   }
+  },
+  {
+   "slug": "agentforce",
+   "name": "Agentforce and Data 360, pilot to production",
+   "icon": "agent",
+   "summary": "Take one Agentforce agent from pilot to production in six weeks, grounded in Data 360 and connected to the systems it acts on.",
+   "nav": "Agentforce from pilot to production",
+   "scope": [
+    "Use case scoring for value, risk and data readiness",
+    "Agent topic, instruction and action design",
+    "Data 360 data streams, identity resolution and zero copy connections where the agent needs them",
+    "Integration to the one or two core systems the agent must act on"
+   ],
+   "entry": {
+    "name": "Agentforce Pilot-to-Production Sprint",
+    "length": "6 weeks",
+    "d": "Takes an existing Agentforce pilot or use case to production in your org, with Data 360 grounding, a KPI baseline and a test suite."
+   }
+  },
+  {
+   "slug": "revenue-cloud-migration",
+   "name": "CPQ to Revenue Cloud migration",
+   "icon": "revenue",
+   "summary": "A decision-grade blueprint, then a staged move from Salesforce CPQ to Revenue Cloud Advanced, timed to your renewals and your agent plans.",
+   "nav": "Salesforce CPQ to Revenue Cloud Advanced",
+   "scope": [
+    "Inventory of CPQ objects, price rules, product rules, quote calculator scripts and integrations",
+    "Mapping to Revenue Cloud Advanced constructs and gap analysis",
+    "Choice among Salesforce's four migration approaches",
+    "Rollout pattern: big bang, pilot first, bridge or cohort based"
+   ],
+   "entry": {
+    "name": "CPQ Migration Blueprint",
+    "length": "4 weeks",
+    "d": "A full inventory of your CPQ setup and a staged plan for Revenue Cloud Advanced, or a reasoned case to wait."
+   }
+  },
+  {
+   "slug": "life-sciences-cloud",
+   "name": "Veeva CRM to Agentforce Life Sciences",
+   "icon": "molecule",
+   "summary": "A switch plan and migration factory for commercial teams moving from Veeva CRM to Salesforce's Agentforce Life Sciences before Veeva CRM support ends.",
+   "nav": "Veeva CRM to Agentforce Life Sciences",
+   "scope": [
+    "Inventory of Veeva CRM objects, customizations and data volumes",
+    "Interface inventory: master data, consent, samples, events, data warehouse and middleware",
+    "Target design on Agentforce Life Sciences, with agent use cases for field and medical teams",
+    "Data migration approach, mapping and reconciliation"
+   ],
+   "entry": {
+    "name": "Veeva CRM Switch Assessment",
+    "length": "4 weeks",
+    "d": "A fact base and wave plan for moving from Veeva CRM to Agentforce Life Sciences, with integration and data scope sized."
+   }
+  },
+  {
+   "slug": "integration-and-data",
+   "name": "Integration and data for agents",
+   "icon": "integration",
+   "summary": "MuleSoft, Agent Fabric and Data 360 work that gives agents governed access to the systems and data they act on, built on Prolifics' long integration history.",
+   "nav": "MuleSoft, Agent Fabric and Data 360",
+   "scope": [
+    "Integration and runtime health check across MuleSoft and other middleware",
+    "Mule 4.6 LTS and Mule 3 upgrade planning and execution",
+    "API design for agent actions with security scopes",
+    "Agent Fabric setup for agent registry, routing and policies"
+   ],
+   "entry": {
+    "name": "Integration and Runtime Health Check",
+    "length": "2 weeks",
+    "d": "A review of your MuleSoft and middleware estate against agent requirements and runtime support dates, with a ranked fix list."
+   }
+  },
+  {
+   "slug": "financial-services-cloud",
+   "name": "Financial Services Cloud and agents",
+   "icon": "bank",
+   "summary": "Financial Services Cloud designed for agents from day one, for banks, wealth firms and insurers that need controls a regulator will recognize.",
+   "nav": "Industry clouds for banking and insurance",
+   "scope": [
+    "Financial Services Cloud data model design or remediation",
+    "Core banking, policy administration and claims system integration",
+    "Agent use cases for service, onboarding and advisor preparation",
+    "Complaints, disputes and case management workflows"
+   ],
+   "entry": {
+    "name": "Financial Services Agent Blueprint",
+    "length": "3 weeks",
+    "d": "A review of your Financial Services Cloud org and core integrations, with three agent use cases designed to your control requirements."
+   }
+  },
+  {
+   "slug": "agent-testing-and-assurance",
+   "name": "Agent testing and assurance",
+   "icon": "testing",
+   "summary": "Evaluation, red teaming and regression testing for Agentforce agents, delivered with Prolifics Testing, so you know how an agent behaves before customers do.",
+   "nav": "Agent evaluation and red teaming",
+   "scope": [
+    "Evaluation set design from real transcripts and edge cases",
+    "Pass marks per topic agreed with business owners",
+    "Red teaming for prompt injection, data leakage and unsafe actions",
+    "Permission and data access testing for agent users"
+   ],
+   "entry": {
+    "name": "Agent Evaluation and Red Team Check",
+    "length": "2 weeks",
+    "d": "A structured evaluation and red team exercise on one live or pilot agent, with a scored report and fix list."
+   }
+  },
+  {
+   "slug": "managed-salesforce",
+   "name": "Managed Salesforce and AgentOps",
+   "icon": "managed",
+   "summary": "A managed service for Salesforce orgs with agents in production: monitoring, release regression, consumption tracking and a steady backlog of improvements.",
+   "nav": "Managed services and AgentOps",
+   "scope": [
+    "Platform administration, user and permission management",
+    "Agent monitoring for resolution, escalation and drift",
+    "Release management and regression testing with Prolifics Testing",
+    "Knowledge and instruction maintenance"
+   ],
+   "entry": {
+    "name": "AgentOps Baseline",
+    "length": "3 weeks",
+    "d": "An inventory and health check of your Salesforce org and agents, with a proposed run model and KPIs for a managed service."
+   }
+  }
+ ],
+ "industries": [
+  {
+   "slug": "banking-and-capital-markets",
+   "name": "Banking and capital markets",
+   "icon": "bank",
+   "summary": "Agents for onboarding, servicing and relationship management in banks and capital markets firms, connected to core systems and built to supervisory standards.",
+   "img": "i_bank"
+  },
+  {
+   "slug": "health-insurance",
+   "name": "Health insurance and payers",
+   "icon": "health",
+   "summary": "Agents for member, provider and broker service in health plans, connected to claims, eligibility and care management systems.",
+   "img": "i_hosp_arch_4"
+  },
+  {
+   "slug": "insurance",
+   "name": "Insurance",
+   "icon": "insurance",
+   "summary": "Agents for policy servicing, claims intake and broker support in property and casualty, life and specialty insurers.",
+   "img": "r02"
+  },
+  {
+   "slug": "manufacturing-and-high-tech",
+   "name": "Manufacturing and high tech",
+   "icon": "factory",
+   "summary": "Revenue Cloud, order and service agents for manufacturers and high tech firms with configurable products, partner channels and long-lived installed bases.",
+   "img": "g_chip"
+  },
+  {
+   "slug": "life-sciences",
+   "name": "Life sciences commercial",
+   "icon": "molecule",
+   "summary": "Commercial and medical teams moving from Veeva CRM to Agentforce Life Sciences, with integration, data and validation planned as the critical path.",
+   "img": "cs_mckesson"
+  },
+  {
+   "slug": "public-sector-and-nonprofit",
+   "name": "Public sector and nonprofit",
+   "icon": "government",
+   "summary": "Salesforce for agencies and nonprofits that serve constituents, manage grants and run programs, with agents introduced under clear human oversight.",
+   "img": "i_columns_5"
+  }
+ ]
+}

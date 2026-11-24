@@ -1,0 +1,45 @@
+/* Static client logo grid (22 Nov 2026), shared by the home page and inner pages. Even 6 column wall, generous rows,
+   monochrome until hover. Replaces the scrolling marquee. */
+.lgw{background:#FAFAF8;border-bottom:1px solid var(--line);padding:88px 0 96px}
+.lgw-h{text-align:center;font-family:var(--disp);font-weight:600;font-size:clamp(26px,2.6vw,40px);letter-spacing:-.03em;color:var(--navy);line-height:1.15}
+.lgw-s{text-align:center;color:var(--mut);margin-top:10px;font-size:15.5px}
+.lgw-g{display:grid;grid-template-columns:repeat(6,1fr);row-gap:64px;column-gap:24px;margin-top:72px;align-items:center}
+.lgw-g li{display:flex;justify-content:center;align-items:center;min-height:48px}
+.lgw-g img{width:auto;max-width:160px;object-fit:contain;filter:grayscale(1) contrast(.9);opacity:.6;transition:filter .35s,opacity .35s,transform .35s var(--ease)}
+.lgw-g li:hover img{filter:none;opacity:1;transform:translateY(-2px)}
+.js .lgw-g [data-r]{transform:translateY(14px)}
+@media (max-width:1024px){.lgw{padding:72px 0}.lgw-g{grid-template-columns:repeat(4,1fr);row-gap:48px;margin-top:52px}}
+@media (max-width:720px){.lgw{padding:56px 0 60px}.lgw-g{grid-template-columns:repeat(3,1fr);row-gap:36px;column-gap:16px;margin-top:40px}
+ .lgw-g img{max-width:96px;max-height:30px}}
+/* Industry wall (23 Nov 2026): tabs by industry, a 150+ tile, a starred note on group-company clientele */
+.lgw-tl{display:flex;flex-wrap:wrap;justify-content:center;gap:8px;margin-top:28px}
+.lgw-t{font-size:14px;font-weight:500;padding:9px 16px;border:1px solid var(--line);border-radius:999px;color:var(--navy);background:#fff;transition:all .2s}
+.lgw-t:hover{border-color:var(--navy)}.lgw-t.on{background:var(--navy);border-color:var(--navy);color:#fff}
+.lgw-tl+.lgw-g,.lgw-g{margin-top:56px}
+.lgw-g[hidden]{display:none}
+.lgw-more{flex-direction:column;gap:2px;text-align:center}
+.lgw-more b{font-family:var(--disp);font-size:30px;font-weight:700;letter-spacing:-.04em;color:var(--navy);line-height:1}
+.lgw-more span{font-size:12.5px;color:var(--mut);line-height:1.35;max-width:150px}
+.lgw-more sup,.lgw-n sup,.ls-in sup{color:var(--cyd);font-weight:600}
+.lgw-n{text-align:center;font-size:13px;color:var(--mut);margin-top:44px}
+.ls-n{grid-column:1/-1;font-size:12.5px;color:var(--mut)}
+/* group company logos */
+.glogo{display:flex;align-items:center;justify-content:center;flex:none;width:150px;height:72px;background:#fff;border:1px solid var(--line);border-radius:10px;padding:10px 14px}
+.glogo img{max-width:100%;max-height:100%;width:auto;height:auto;object-fit:contain}
+.grp2 li{align-items:center}
+.gl li{align-items:center}.gl li .glogo.d{width:150px;height:64px;border-color:transparent}
+@media (max-width:720px){.lgw-tl{justify-content:flex-start;flex-wrap:nowrap;overflow-x:auto;margin:22px -16px 0;padding:0 16px 4px;scrollbar-width:none}.lgw-t{flex:none}
+ .lgw-g{margin-top:32px}.lgw-more b{font-size:24px}.glogo{width:120px;height:60px}}
+/* group company pages (23 Nov 2026) */
+.gcards{display:grid;grid-template-columns:repeat(2,1fr);gap:22px}
+.gcard{display:flex;flex-direction:column;gap:10px;padding:30px;border:1px solid var(--line);background:#fff;transition:border-color .25s,box-shadow .25s,transform .3s var(--ease)}
+.gcard:hover{border-color:var(--navy);box-shadow:0 30px 60px -36px rgba(0,24,74,.35);transform:translateY(-3px)}
+.gcard-l{display:flex;align-items:center;height:64px;margin-bottom:6px}.gcard-l img{max-height:56px;max-width:220px;width:auto;object-fit:contain}
+.gcard-k{font-size:12px;font-weight:600;letter-spacing:.12em;text-transform:uppercase;color:var(--cyd)}
+.gcard b{font-family:var(--disp);font-size:22px;color:var(--navy);line-height:1.25}.gcard-d{color:var(--mut);font-size:15px;flex:1}
+.gcard .lnk{align-self:flex-start;margin-top:8px}
+.g-hl{display:inline-flex;align-items:center;height:64px;padding:10px 16px;background:#fff;border:1px solid var(--line);border-radius:10px;margin-bottom:22px}
+.g-hl img{max-height:44px;width:auto}
+.src{font-size:12px;color:var(--cyd);border-bottom:1px dotted currentColor;margin-left:4px;white-space:nowrap}
+.pchips .pchip{cursor:default}
+@media (max-width:720px){.gcards{grid-template-columns:1fr}.gcard{padding:22px}}
