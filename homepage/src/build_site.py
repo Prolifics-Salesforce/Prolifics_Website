@@ -666,5 +666,5 @@ if __name__ == "__main__":
           "redirects": [{"source": "/solutions", "destination": "/services", "permanent": False},
                         {"source": "/solutions/:p*", "destination": "/services", "permanent": False}]}
     json.dump(vc, open(os.path.join(DIST, "vercel.json"), "w"), indent=1)
-    shutil.copytree(os.path.join(HERE, "api"), os.path.join(DIST, "api"), dirs_exist_ok=True)   # /api/lead: sends a submitted form on to /thank-you
+    shutil.copytree(os.path.join(HERE, "api"), os.path.join(DIST, "api"), dirs_exist_ok=True)   # /api/lead: sends form submissions to HubSpot
     print("%d pages, dashes %d, exclamation %d" % (len(pages) + 1, total_d, total_x))

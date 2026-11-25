@@ -1063,14 +1063,18 @@ background-image:url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/sv
 .cf-i{border:0;display:flex;flex-wrap:wrap;gap:8px}.cf-i legend{font-size:13.5px;font-weight:500;color:var(--navy);margin-bottom:10px}
 .ck{display:inline-flex;align-items:center;gap:8px;padding:8px 14px;border:1px solid var(--line);border-radius:999px;font-size:14px;cursor:pointer}
 .ck input{accent-color:var(--navy)}.ck:has(input:checked){border-color:var(--navy);background:#F2FAFE}
-/* lead form: plain HTML, collected by the HubSpot tracking script */
+/* lead form: native fields, posts to /api/lead */
 .lf .fld span i{font-style:normal;color:#C62828;margin-left:2px}.lf .fld span em{font-style:normal;font-weight:400;color:var(--mut);font-size:12.5px;margin-left:8px}
 .fld select{font:inherit;font-size:15px;font-weight:400;padding:12px 38px 12px 14px;border:1px solid #CFCAC0;color:var(--text);border-radius:0;appearance:none;-webkit-appearance:none;transition:border-color .2s,box-shadow .2s;
  background:#fff url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' width='12' height='8'%3E%3Cpath d='M1 1l5 5 5-5' fill='none' stroke='%23001F5B' stroke-width='1.6'/%3E%3C/svg%3E") no-repeat right 14px center}
 .fld select:focus{outline:0;border-color:var(--navy);box-shadow:0 0 0 3px rgba(0,174,239,.2)}
 .lf .fld textarea{resize:vertical;min-height:112px}.lf .fld.wide{margin:0 0 18px}.lf .cf-g{margin-bottom:16px}
 .lf-ck{display:flex;gap:10px;align-items:flex-start;font-size:14px;color:var(--text);margin-bottom:20px;cursor:pointer}.lf-ck input{margin-top:3px;width:16px;height:16px;flex:none;accent-color:var(--navy)}
-.lf input[type=submit]{border:0;cursor:pointer;font-family:inherit;-webkit-appearance:none;appearance:none}
+.lf-e{font-size:12.5px;font-weight:400;color:#C62828}.lf-e:empty{display:none}
+.lf-hp{position:absolute;left:-9999px;width:1px;height:1px;overflow:hidden}
+.lf button{border:0;cursor:pointer;font-family:inherit}.lf button[disabled]{opacity:.6;cursor:default}
+.lf-m{font-size:14px;color:var(--mut);margin-top:12px}.lf-m:empty{display:none}.lf-m.bad{color:#C62828}
+.lf-ok{padding:24px 0;outline:0}.lf-ok h3{font-size:28px;color:var(--navy);margin-bottom:10px}.lf-ok div{color:var(--mut);font-size:16px}
 .cf-n{margin-top:14px;font-size:14.5px;color:var(--navy);font-weight:500}.cf-p{margin-top:10px;font-size:13px;color:var(--mut)}.cf-p a{color:var(--cyd)}
 @media (max-width:1240px){.pts{grid-template-columns:repeat(3,1fr)}.sig.g4{grid-template-columns:repeat(2,1fr)}}
 @media (max-width:1024px){.slc,#cs-list .ccs,.locs,.ldrs,.acc2{grid-template-columns:repeat(2,1fr)}.bx3{grid-template-columns:1fr}.tline{grid-template-columns:repeat(2,1fr)}
@@ -1281,4 +1285,40 @@ background-image:url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/sv
     });
   });
 })();
-</script><!-- Start of HubSpot Embed Code --><script type="text/javascript" id="hs-script-loader" async defer src="//js.hs-scripts.com/52356695.js"></script><!-- End of HubSpot Embed Code --></body></html>
+/* Lead forms: check the three required fields, post to /api/lead (which sends to HubSpot from the server), show the
+   result inline. Without JavaScript the form posts normally and the server redirects to /thank-you. */
+(function () {
+  [].forEach.call(document.querySelectorAll("form.lf"), function (f) {
+    var msg = f.querySelector(".lf-m"), btn = f.querySelector("button");
+    f.noValidate = true;   // this script shows its own messages
+    function err(i, t) { i.setAttribute("aria-invalid", t ? "true" : "false"); i.parentNode.querySelector(".lf-e").textContent = t; }
+    f.addEventListener("input", function (e) { if (e.target.getAttribute("aria-invalid") === "true") err(e.target, ""); });
+    f.addEventListener("submit", function (e) {
+      e.preventDefault();
+      var bad = null, fields = {};
+      [].forEach.call(f.elements, function (i) {
+        if (!i.name) return;
+        var v = i.type === "checkbox" ? (i.checked ? "true" : "") : i.value.trim();
+        if (i.required) {
+          var t = !v ? "This field is required" : (i.type === "email" && !/^[^@\s]+@[^@\s]+\.[^@\s]{2,}$/.test(v)) ? "Enter a valid email address" : "";
+          err(i, t); if (t && !bad) bad = i;
+        }
+        if (v) fields[i.name] = v;
+      });
+      if (bad) { bad.focus(); return; }
+      btn.disabled = true; msg.className = "lf-m"; msg.textContent = "Sending your request";
+      fetch("/api/lead", { method: "POST", headers: { "Content-Type": "application/json" },
+        body: JSON.stringify({ fields: fields, context: { pageUri: location.href, pageName: document.title } }) })
+        .then(function (r) { return r.json().catch(function () { return {}; }).then(function (j) { if (!r.ok || !j.ok) throw new Error("rejected"); }); })
+        .then(function () {
+          f.innerHTML = '<div class="lf-ok" role="status" tabindex="-1"><h3>Thank you</h3><div>A Prolifics expert in your industry and platform will get back to you within one business day.</div></div>';
+          f.firstChild.focus();
+        })
+        .catch(function () {
+          btn.disabled = false; msg.className = "lf-m bad";
+          msg.textContent = "We could not send your request. Please try again, or call us on the numbers on the contact page.";
+        });
+    });
+  });
+})();
+</script></body></html>

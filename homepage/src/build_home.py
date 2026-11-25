@@ -9,12 +9,6 @@ from PIL import Image
 HERE = os.path.dirname(os.path.abspath(__file__))
 PROJ = os.path.dirname(HERE)
 DIST = os.path.join(PROJ, "dist")
-# HubSpot tracking script (25 Nov 2026). It goes on every page, once, just before </body>. With "Collect data from
-# website forms" turned on in HubSpot (Settings > Marketing > Forms > Non-HubSpot Forms) it sends each form submission
-# to HubSpot. Hub ID 52356695 is the Prolifics HubSpot Dev account: swap it for the production ID at launch.
-HUB = "52356695"
-TRACK = ('<!-- Start of HubSpot Embed Code --><script type="text/javascript" id="hs-script-loader" async defer '
-         'src="//js.hs-scripts.com/%s.js"></script><!-- End of HubSpot Embed Code -->' % HUB)
 GTM = os.path.join(HERE, "brand")   # Prolifics logos, favicon and client logos (copied from the GTM project, Nov 2026)
 E = lambda s: html.escape(s, quote=True)
 
@@ -290,9 +284,9 @@ def page(final=False):
             '<script>document.documentElement.className+=" js"</script><meta name="theme-color" content="#FBFAF7"><link rel="icon" href="assets/favicon.png">%s<link rel="preconnect" href="https://fonts.googleapis.com"><link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>'
             '<link href="https://fonts.googleapis.com/css2?family=Inter+Tight:wght@500;600;700;800&family=Inter:wght@400;500;600&display=swap" rel="stylesheet">'
             '<style>%s</style><script type="application/ld+json">%s</script></head><body class="top">'
-            '<a class="skip" href="#main">Skip to content</a>%s%s<main id="main">%s%s%s%s%s%s%s%s%s%s%s</main>%s<script>%s</script>%s</body></html>'
+            '<a class="skip" href="#main">Skip to content</a>%s%s<main id="main">%s%s%s%s%s%s%s%s%s%s%s</main>%s<script>%s</script></body></html>'
             % (robots, preload, CSS, json.dumps(ld), header(), drawer(), hero(), logos(), stats() + standing(), practices(), fde(), proof(), industries(),
-               platforms(), group(), guides(), cta(), footer(), JS, TRACK))
+               platforms(), group(), guides(), cta(), footer(), JS))
 
 def copy_images():
     src, dst = os.path.join(HERE, "img2"), os.path.join(DIST, "assets", "img")

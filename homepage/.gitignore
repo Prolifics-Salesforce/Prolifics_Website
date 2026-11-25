@@ -5,3 +5,4 @@ __pycache__/
 .DS_Store
 ref/*.html
 ref/cs/*.html
+.env*
