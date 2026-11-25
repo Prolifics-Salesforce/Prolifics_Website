@@ -79,12 +79,21 @@ module.exports = async function handler(req, res) {
     return Object.keys(f).map((name) => ({ objectTypeId: "0-1", name, value: f[name] }));
   };
 
+  // HubSpot answers 200 but silently discards a submission whose page address is on a shared preview host
+  // (*.vercel.app): tested 25 Nov 2026, localhost and prolifics.com addresses were kept. On those hosts the address
+  // goes into the page name instead, so preview deployments can be tested. A real domain is sent normally.
+  let pageUri = clean(ctx.pageUri || req.headers.referer, 2000), pageName = clean(ctx.pageName, 300);
+  if (/^https?:\/\/[^\/]*\.vercel\.app(\/|$)/i.test(pageUri)) {
+    pageName = ((pageName ? pageName + " " : "") + "(" + pageUri.replace(/^https?:\/\//i, "").split(/[?#]/)[0] + ")").slice(0, 300);
+    pageUri = "";
+  }
+
   const payload = {
     submittedAt: Date.now(),
     fields: toFields(Boolean(prop)),
     context: {
-      pageUri: clean(ctx.pageUri || req.headers.referer, 2000) || undefined,
-      pageName: clean(ctx.pageName, 300) || undefined,
+      pageUri: pageUri || undefined,
+      pageName: pageName || undefined,
       ipAddress: (req.headers["x-forwarded-for"] || "").split(",")[0].trim() || undefined,
     },
   };
