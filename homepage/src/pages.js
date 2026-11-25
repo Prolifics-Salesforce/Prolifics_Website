@@ -61,3 +61,38 @@
     });
   });
 })();
+/* Lead forms: check the three required fields, post to /api/lead (which forwards to HubSpot), show the result inline. */
+(function () {
+  [].forEach.call(document.querySelectorAll("form.lf"), function (f) {
+    var msg = f.querySelector(".lf-m"), btn = f.querySelector("button");
+    function err(i, t) { i.setAttribute("aria-invalid", t ? "true" : "false"); i.parentNode.querySelector(".lf-e").textContent = t; }
+    f.addEventListener("input", function (e) { if (e.target.getAttribute("aria-invalid") === "true") err(e.target, ""); });
+    f.addEventListener("submit", function (e) {
+      e.preventDefault();
+      var bad = null, fields = {};
+      [].forEach.call(f.elements, function (i) {
+        if (!i.name) return;
+        var v = i.type === "checkbox" ? (i.checked ? "true" : "") : i.value.trim();
+        if (i.required) {
+          var t = !v ? "This field is required" : (i.type === "email" && !/^[^@\s]+@[^@\s]+\.[^@\s]{2,}$/.test(v)) ? "Enter a valid email address" : "";
+          err(i, t); if (t && !bad) bad = i;
+        }
+        if (v) fields[i.name] = v;
+      });
+      if (bad) { bad.focus(); return; }
+      var key = fields.interest || f.getAttribute("data-form"); delete fields.interest;
+      btn.disabled = true; msg.className = "lf-m"; msg.textContent = "Sending your request";
+      fetch("/api/lead", { method: "POST", headers: { "Content-Type": "application/json" },
+        body: JSON.stringify({ formKey: key, fields: fields, context: { pageUri: location.href, pageName: document.title } }) })
+        .then(function (r) { return r.json().catch(function () { return {}; }).then(function (j) { if (!r.ok || !j.ok) throw new Error("rejected"); }); })
+        .then(function () {
+          f.innerHTML = '<div class="lf-ok" role="status" tabindex="-1"><h3>Thank you</h3><div>A Prolifics expert in your industry and platform will get back to you within one business day.</div></div>';
+          f.firstChild.focus();
+        })
+        .catch(function () {
+          btn.disabled = false; msg.className = "lf-m bad";
+          msg.textContent = "We could not send your request. Please try again, or call us on the numbers on the contact page.";
+        });
+    });
+  });
+})();

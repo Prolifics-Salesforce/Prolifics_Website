@@ -79,6 +79,13 @@ Both previews redirect inner pages (/services/..., /solutions/..., /about, /cont
    clients published on prolifics-testing.com (src/brand/clients/group/sources.json).
 17. Source and builds go to Google Drive from 23 Nov 2026 (Drive replaces GitHub; the GitHub repo is an archive):
    My Drive/Client Decks 2026/Prolifics/Website 2026/Source code (current). Commit locally, do not push.
+18. Native lead form (25 Nov 2026) replaces the HubSpot embed on every page: `hs_form()` in build_pages.py, styles in
+   pages.css (`.lf`), behavior at the end of pages.js. Fields: first name, last name and work email required; phone,
+   company, job title, country, area of interest and message optional. It posts to `/api/lead` (`src/api/lead.js`, a
+   Vercel function that build_site.py copies into `dist/api`), which forwards to the "Website 2026" HubSpot form for the
+   chosen area of interest. Vercel needs `HUBSPOT_TOKEN` (private app, `forms` scope): without it HubSpot rejects fields
+   that are not on the form definition and the function falls back to name, email and phone only.
+   Tested in dry-run mode only (`HUBSPOT_DRY_RUN=1`); no live submission has been made.
 12. Client logos are a static even grid, not a marquee (Mac, 22 Nov 2026, harvey.ai customer wall as the reference):
    `logo_grid()` in build_home.py with `src/logogrid.css`, 6 columns, 4 at tablet, 3 on phones.
 
