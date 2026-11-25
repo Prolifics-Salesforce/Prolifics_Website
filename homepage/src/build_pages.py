@@ -111,10 +111,11 @@ FORMS = {"ai": "44477275-4b25-44a6-8d63-35ab5b1805ad", "fde": "09cebf58-d31b-478
          "solutions": "d3e700db-c885-421e-99f8-caf567f4b21e", "general": "a63a4cb4-4803-4425-b135-ddbf740dfa43"}
 FORM = {"key": "general"}   # set per page by the site builder
 
-# Native lead form (25 Nov 2026), replacing the HubSpot embed. It posts to /api/lead (src/api/lead.js, a Vercel
-# function copied into dist/api by build_site.py), which forwards the submission to the HubSpot form for the chosen
-# area of interest. Only first name, last name and work email are required. The form GUIDs above are repeated in
-# src/api/lead.js: keep the two in step.
+# Native lead form (25 Nov 2026), replacing the HubSpot embed. HubSpot collects it through the tracking script on
+# every page (H.TRACK, "non-HubSpot forms"), which only works while the form stays plain HTML: an <input type="email">,
+# an <input type="submit"> and NO JavaScript on the form's submit or the button's click. Do not add a submit handler.
+# The form posts to /api/lead (src/api/lead.js, copied into dist/api by build_site.py), which only redirects to
+# /thank-you. Only first name, last name and work email are required (browser validation).
 INTEREST = [("ai", "AI and Data"), ("fde", "FDE AI Engineering"), ("sf", "Salesforce"), ("sn", "ServiceNow"), ("sap", "SAP and ERP"),
             ("app", "Application and Cloud"), ("bt", "Business Transformation"), ("qe", "Quality Engineering"), ("general", "Not sure yet")]
 COUNTRIES = ["United States", "Canada", "United Kingdom", "Ireland", "Germany", "France", "Netherlands", "Spain", "Italy", "Switzerland",
@@ -126,16 +127,15 @@ def hs_form(key=None):
     assert key in FORMS
     def lab(t, req): return '<span>%s%s</span>' % (E(t), '<i aria-hidden="true">*</i>' if req else '<em>Optional</em>')
     def inp(name, t, typ="text", req=False, ac="off", ph=""):
-        return ('<label class="fld">%s<input type="%s" name="%s" autocomplete="%s"%s%s><span class="lf-e" role="alert"></span></label>'
+        return ('<label class="fld">%s<input type="%s" name="%s" autocomplete="%s"%s%s></label>'
                 % (lab(t, req), typ, name, ac, ' placeholder="%s"' % E(ph) if ph else "", " required" if req else ""))
     def sel(name, t, opts, cur=None):
         return ('<label class="fld">%s<select name="%s"><option value="">Select</option>%s</select></label>'
-                % (lab(t, False), name, "".join('<option value="%s"%s>%s</option>' % (E(v), " selected" if v == cur else "", E(l)) for v, l in opts)))
-    return ('<form class="lf" data-form="%s" novalidate><div class="cf-g">%s%s%s%s%s%s%s%s</div>'
+                % (lab(t, False), name, "".join('<option value="%s"%s>%s</option>' % (E(l), " selected" if v == cur else "", E(l)) for v, l in opts)))
+    return ('<form class="lf" data-form="%s" method="post" action="/api/lead"><div class="cf-g">%s%s%s%s%s%s%s%s</div>'
             '<label class="fld wide">%s<textarea name="message" rows="4" placeholder="The outcome you want, the systems involved and your timing"></textarea></label>'
             '<label class="lf-ck"><input type="checkbox" name="marketing_opt_in"><span>Send me Prolifics insights and event invitations. I can unsubscribe at any time.</span></label>'
-            '<div class="lf-hp" aria-hidden="true"><input type="text" name="website_url" tabindex="-1" autocomplete="off"></div>'
-            '<button class="btn btn-p" type="submit">Talk to Our Experts</button><div class="lf-m" role="status"></div>'
+            '<input class="btn btn-p" type="submit" value="Talk to Our Experts">'
             '<div class="cf-p">By submitting, you agree that Prolifics may use these details to respond to your request, as described in the '
             '<a href="https://prolifics.ai/privacy-policy" rel="noopener">Privacy Policy</a>.</div></form>'
             % (key, inp("firstname", "First name", req=True, ac="given-name"), inp("lastname", "Last name", req=True, ac="family-name"),
@@ -169,8 +169,8 @@ def shell(title, desc, body, crumb):
             '<link rel="preconnect" href="https://fonts.googleapis.com"><link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>'
             '<link href="https://fonts.googleapis.com/css2?family=Inter+Tight:wght@500;600;700;800&family=Inter:wght@400;500;600&display=swap" rel="stylesheet">'
             '<style>%s%s</style></head><body class="inner">'
-            '<a class="skip" href="#main">Skip to content</a>%s%s%s<main id="main">%s</main>%s<script>%s%s</script></body></html>'
-            % (robots, E(title), E(desc), H.CSS, PCSS, H.header(), H.drawer(), crumbs(crumb), body, H.footer(), H.JS, PJS))
+            '<a class="skip" href="#main">Skip to content</a>%s%s%s<main id="main">%s</main>%s<script>%s%s</script>%s</body></html>'
+            % (robots, E(title), E(desc), H.CSS, PCSS, H.header(), H.drawer(), crumbs(crumb), body, H.footer(), H.JS, PJS, H.TRACK))
 
 # ---------------------------------------------------------------- 1. Services landing
 def services():

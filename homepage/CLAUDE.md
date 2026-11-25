@@ -81,11 +81,13 @@ Both previews redirect inner pages (/services/..., /solutions/..., /about, /cont
    My Drive/Client Decks 2026/Prolifics/Website 2026/Source code (current). Commit locally, do not push.
 18. Native lead form (25 Nov 2026) replaces the HubSpot embed on every page: `hs_form()` in build_pages.py, styles in
    pages.css (`.lf`), behavior at the end of pages.js. Fields: first name, last name and work email required; phone,
-   company, job title, country, area of interest and message optional. It posts to `/api/lead` (`src/api/lead.js`, a
-   Vercel function that build_site.py copies into `dist/api`), which forwards to the "Website 2026" HubSpot form for the
-   chosen area of interest. Vercel needs `HUBSPOT_TOKEN` (private app, `forms` scope): without it HubSpot rejects fields
-   that are not on the form definition and the function falls back to name, email and phone only.
-   Tested in dry-run mode only (`HUBSPOT_DRY_RUN=1`); no live submission has been made.
+   company, job title, country, area of interest and message optional. HubSpot collects it as a "non-HubSpot form"
+   through the tracking script on every page (`TRACK` in build_home.py, Hub ID 52356695, the Prolifics HubSpot Dev
+   account: swap for the production ID at launch). This needs "Collect data from website forms" turned on in HubSpot
+   (Settings > Marketing > Forms > Non-HubSpot Forms), and the form must stay plain HTML: `<input type="email">`,
+   `<input type="submit">` and no JavaScript on submit or click. The form posts to `/api/lead` (`src/api/lead.js`,
+   copied into `dist/api`), which only redirects to `/thank-you`. Visitors who block trackers are not captured.
+   Not yet tested against HubSpot: that needs a deployed page and the setting turned on.
 12. Client logos are a static even grid, not a marquee (Mac, 22 Nov 2026, harvey.ai customer wall as the reference):
    `logo_grid()` in build_home.py with `src/logogrid.css`, 6 columns, 4 at tablet, 3 on phones.
 

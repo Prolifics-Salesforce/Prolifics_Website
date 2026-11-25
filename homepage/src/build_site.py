@@ -548,6 +548,12 @@ def contact_page():
             + H.logo_grid(P.GRID_LOGOS, P.ASPECT, "Trusted by 150+ Fortune 1000 clients", "clients"))
     return shell("Contact", page["desc"] or "Talk to Prolifics experts", body, [("Home", "/"), ("Contact", None)])
 
+def thanks_page():
+    body = ('<section class="ct"><div class="wrap"><div class="ct-l"><p class="kick">Contact</p><h1>Thank you</h1>'
+            '<p class="ph-lead">We have your request. A Prolifics expert in your industry and platform will get back to you within one business day.</p>'
+            '%s</div></div></section>' % ctas(("Back to the home page", "/"), ("Explore services", "/services")))
+    return shell("Thank you", "Thank you for contacting Prolifics.", body, [("Home", "/"), ("Contact", "/contact"), ("Thank you", None)])
+
 # ---------------------------------------------------------------- group companies
 def src_link(u): return ' <a class="src" href="%s" rel="noopener">source</a>' % E(u) if u else ""
 
@@ -620,7 +626,7 @@ def all_pages():
     pages.update({"about": about_page, "about/leadership": leadership_page, "about/careers": careers_page, "about/locations": locations_page,
                   "about/social-impact": lambda: simple_about("/about/social-impact", "r02", "Social Impact"),
                   "about/esg": lambda: simple_about("/about/esg", "i_powerlines_1", "ESG Vision"),
-                  "partnerships": partnerships_page, "resources": resources_page, "contact": contact_page})
+                  "partnerships": partnerships_page, "resources": resources_page, "contact": contact_page, "thank-you": thanks_page})
     for t, d, u, im in GUIDES: pages[u.lstrip("/")] = (lambda u=u: guide_page(u))
     pages["group"] = group_landing
     for k in GROUP_PAGES: pages["group/" + k] = (lambda k=k: group_page(k))
@@ -660,5 +666,5 @@ if __name__ == "__main__":
           "redirects": [{"source": "/solutions", "destination": "/services", "permanent": False},
                         {"source": "/solutions/:p*", "destination": "/services", "permanent": False}]}
     json.dump(vc, open(os.path.join(DIST, "vercel.json"), "w"), indent=1)
-    shutil.copytree(os.path.join(HERE, "api"), os.path.join(DIST, "api"), dirs_exist_ok=True)   # /api/lead: form submissions to HubSpot
+    shutil.copytree(os.path.join(HERE, "api"), os.path.join(DIST, "api"), dirs_exist_ok=True)   # /api/lead: sends a submitted form on to /thank-you
     print("%d pages, dashes %d, exclamation %d" % (len(pages) + 1, total_d, total_x))
