@@ -63,7 +63,7 @@ def mega_about():
 
 def header():
     nav = [("Services", "services"), ("Industries", "industries"), ("Partnerships", "/partnerships"),
-           ("Resources", "/resources"), ("About Us", "about")]
+           ("Resources", "/resources"), ("Happenings", "/happenings"), ("About Us", "about")]
     lis = "".join(('<li><a class="nv" href="%s">%s</a></li>' % (k, E(t))) if k.startswith("/") else
                   ('<li><button type="button" class="nv" aria-expanded="false" aria-controls="mega-%s" data-mega="mega-%s">%s'
                    '<svg viewBox="0 0 12 12" aria-hidden="true"><path d="M3 4.5l3 3 3-3" fill="none" stroke="currentColor" stroke-width="1.5"/></svg></button></li>' % (k, k, E(t)))
@@ -87,7 +87,7 @@ def drawer():
     ind = '<a class="ov" href="/industries">Explore all industries</a>' + "".join('<a href="%s">%s</a>' % (u, E(t)) for t, d, u, ic, im in INDUSTRIES)
     abt = "".join('<p class="dh">%s</p>%s' % (E(h), "".join('<a href="%s">%s</a>' % (u, E(t)) for t, d, u in links)) for h, links in ABOUT)
     return ('<div class="drawer" id="drawer" hidden><div class="dr-in"><p class="dh top">Services</p>%s%s%s'
-            '<a class="dl" href="/partnerships">Partnerships</a><a class="dl" href="/resources">Resources</a>%s'
+            '<a class="dl" href="/partnerships">Partnerships</a><a class="dl" href="/resources">Resources</a><a class="dl" href="/happenings">Happenings</a>%s'
             '<a class="btn btn-p blk" href="/contact">Talk to Our Experts</a></div></div>'
             % (svc, tech, acc("Industries", ind), acc("About Us", abt)))
 

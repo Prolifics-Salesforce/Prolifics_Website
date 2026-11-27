@@ -554,6 +554,35 @@ def thanks_page():
             '%s</div></div></section>' % ctas(("Back to the home page", "/"), ("Explore services", "/services")))
     return shell("Thank you", "Thank you for contacting Prolifics.", body, [("Home", "/"), ("Contact", "/contact"), ("Thank you", None)])
 
+# ---------------------------------------------------------------- happenings (content comes from HubSpot)
+# Both pages are empty shells: happenings.js fills them in the browser from /api/happenings, which reads the HubDB
+# table "Happenings". Marketing adds, edits, reorders and hides entries in HubSpot; nothing here needs rebuilding.
+# dist/vercel.json rewrites /happenings/<slug> to the one detail shell, so a new row gets its own page at once.
+HP_CSS = open(os.path.join(HERE, "happenings.css"), encoding="utf-8").read()
+HP_JS = open(os.path.join(HERE, "happenings.js"), encoding="utf-8").read()
+def hp_assets(): return "<style>%s</style><script>%s</script>" % (HP_CSS, HP_JS)
+
+def happenings_page():
+    body = ('<section class="hp-top"><div class="wrap"><p class="kick">Happenings</p><h1>Events and campaigns at Prolifics</h1>'
+            '<p class="ph-lead">Where to meet Prolifics next: events, webinars and campaigns from our teams and group companies.</p></div></section>'
+            '<section class="hp-sec"><div class="wrap"><div class="hp-f" id="hp-filters" hidden></div>'
+            '<div class="hp-list" id="hp-list" aria-live="polite"><p class="hp-note">Loading happenings</p></div>'
+            '<noscript><p class="hp-note">Turn on JavaScript to see current happenings, or <a href="/contact">contact us</a>.</p></noscript></div></section>'
+            + hp_assets())
+    return shell("Happenings", "Events, webinars and campaigns from Prolifics and its group companies.", body, [("Home", "/"), ("Happenings", None)])
+
+def happening_detail():
+    form = P.hs_form("general").replace('<form class="lf"', '<form class="lf" data-ok="You are registered. We will email you the details." ', 1).replace(
+        '<div class="cf-g">', '<input type="hidden" name="happening" value=""><div class="cf-g">', 1)
+    body = ('<section class="hp-top hp-one" id="hp-one"><div class="wrap"><p class="hp-note" id="hp-wait">Loading</p>'
+            '<div class="hp-dg" id="hp-detail" hidden><article class="hp-art"><p class="kick" id="hp-type"></p><h1 id="hp-name"></h1>'
+            '<dl class="hp-meta" id="hp-meta"></dl><figure class="hp-fig" id="hp-fig" hidden></figure><p class="ph-lead" id="hp-sum"></p>'
+            '<div class="hp-body" id="hp-body"></div><a class="lnk" href="/happenings">All happenings %s</a></article>'
+            '<aside class="hp-reg" id="hp-reg" hidden><h2 id="hp-reg-h">Register</h2><div class="cf">%s</div></aside></div>'
+            '<noscript><p class="hp-note">Turn on JavaScript to see this happening, or <a href="/contact">contact us</a>.</p></noscript></div></section>'
+            % (arrow(), form) + hp_assets())
+    return shell("Happenings", "Events, webinars and campaigns from Prolifics.", body, [("Home", "/"), ("Happenings", "/happenings"), ("Details", None)])
+
 # ---------------------------------------------------------------- group companies
 def src_link(u): return ' <a class="src" href="%s" rel="noopener">source</a>' % E(u) if u else ""
 
@@ -626,7 +655,8 @@ def all_pages():
     pages.update({"about": about_page, "about/leadership": leadership_page, "about/careers": careers_page, "about/locations": locations_page,
                   "about/social-impact": lambda: simple_about("/about/social-impact", "r02", "Social Impact"),
                   "about/esg": lambda: simple_about("/about/esg", "i_powerlines_1", "ESG Vision"),
-                  "partnerships": partnerships_page, "resources": resources_page, "contact": contact_page, "thank-you": thanks_page})
+                  "partnerships": partnerships_page, "resources": resources_page, "contact": contact_page, "thank-you": thanks_page,
+                  "happenings": happenings_page, "happenings/detail": happening_detail})
     for t, d, u, im in GUIDES: pages[u.lstrip("/")] = (lambda u=u: guide_page(u))
     pages["group"] = group_landing
     for k in GROUP_PAGES: pages["group/" + k] = (lambda k=k: group_page(k))
@@ -664,7 +694,9 @@ if __name__ == "__main__":
     vc = {"headers": [{"source": "/(.*)", "headers": [{"key": "X-Robots-Tag", "value": "noindex, nofollow"}]}], "trailingSlash": False,
           # Solutions removed from the site (Mac, 23 Nov 2026): old links land on Services
           "redirects": [{"source": "/solutions", "destination": "/services", "permanent": False},
-                        {"source": "/solutions/:p*", "destination": "/services", "permanent": False}]}
+                        {"source": "/solutions/:p*", "destination": "/services", "permanent": False}],
+          # every happening shares one page shell; the script on it reads the slug from the address
+          "rewrites": [{"source": "/happenings/:slug", "destination": "/happenings/detail"}]}
     json.dump(vc, open(os.path.join(DIST, "vercel.json"), "w"), indent=1)
     shutil.copytree(os.path.join(HERE, "api"), os.path.join(DIST, "api"), dirs_exist_ok=True)   # /api/lead: sends form submissions to HubSpot
     print("%d pages, dashes %d, exclamation %d" % (len(pages) + 1, total_d, total_x))

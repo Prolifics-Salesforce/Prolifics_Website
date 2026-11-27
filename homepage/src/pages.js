@@ -87,7 +87,10 @@
         body: JSON.stringify({ fields: fields, context: { pageUri: location.href, pageName: document.title } }) })
         .then(function (r) { return r.json().catch(function () { return {}; }).then(function (j) { if (!r.ok || !j.ok) throw new Error("rejected"); }); })
         .then(function () {
-          f.innerHTML = '<div class="lf-ok" role="status" tabindex="-1"><h3>Thank you</h3><div>A Prolifics expert in your industry and platform will get back to you within one business day.</div></div>';
+          var ok = document.createElement("div"), h = document.createElement("h3"), t = document.createElement("div");
+          ok.className = "lf-ok"; ok.setAttribute("role", "status"); ok.tabIndex = -1; h.textContent = "Thank you";
+          t.textContent = f.getAttribute("data-ok") || "A Prolifics expert in your industry and platform will get back to you within one business day.";
+          ok.appendChild(h); ok.appendChild(t); f.innerHTML = ""; f.appendChild(ok);
           f.firstChild.focus();
         })
         .catch(function () {

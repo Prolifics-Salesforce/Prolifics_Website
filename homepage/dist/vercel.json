@@ -22,5 +22,11 @@
    "destination": "/services",
    "permanent": false
   }
+ ],
+ "rewrites": [
+  {
+   "source": "/happenings/:slug",
+   "destination": "/happenings/detail"
+  }
  ]
 }

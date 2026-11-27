@@ -241,7 +241,7 @@ FOOTER = [
                ("Prolifics Testing", "/group/prolifics-testing"), ("Tier 2 Consulting", "/group/tier-2-consulting"), ("Partnerships", "/partnerships")]),
     ("Industries", [("All industries", "/industries")] + [(i[0], i[2]) for i in INDUSTRIES]),
     ("Company", [("About Us", "/about"), ("Leadership", "/about/leadership"), ("Careers", "/about/careers"), ("Locations", "/about/locations"),
-                 ("Resource Center", "/resources"), ("Contact", "/contact")]),
+                 ("Resource Center", "/resources"), ("Happenings", "/happenings"), ("Contact", "/contact")]),
 ]
 LEGAL = [("Legal Notice", "https://prolifics.ai/legal-notice"), ("Privacy Policy", "https://prolifics.ai/privacy-policy"),
          ("Cookie Policy", "https://prolifics.ai/cookie-policy"), ("CCPA", "https://prolifics.ai/ccpa")]

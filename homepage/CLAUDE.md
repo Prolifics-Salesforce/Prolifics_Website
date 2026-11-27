@@ -90,6 +90,15 @@ Both previews redirect inner pages (/services/..., /solutions/..., /about, /cont
    52356695 (Prolifics HubSpot Dev, set the production ID at launch). The other variables are listed at the top of
    lead.js. The function must never log what a visitor typed. Without JavaScript the form posts normally and lands
    on `/thank-you`. Tested in dry-run mode only (`HUBSPOT_DRY_RUN=1`); no live submission has been made.
+19. Happenings (26 Nov 2026): menu item between Resources and About Us, `/happenings` and `/happenings/<slug>`.
+   All content comes from the HubDB table "Happenings" in HubSpot (Dev portal 52356695, table ID 608654438): marketing
+   edits and publishes rows there, the site never needs rebuilding for content. `src/api/_hubdb.js` reads the table
+   with `HUBSPOT_ACCESS_TOKEN` (scopes `hubdb.rows.read`, `hubdb.tables.read`; public table access stays off),
+   `src/api/happenings.js` serves it to the pages (cached about a minute, Body HTML cleaned on the server), and
+   `src/happenings.js` and `src/happenings.css` render it in the browser. Both pages are shells built by
+   build_site.py; `dist/vercel.json` rewrites `/happenings/<slug>` to `/happenings/detail`. Rows with status Hidden
+   are not shown; Featured first, then by start date, Past last. Registration posts to `/api/lead` with the slug and
+   the server looks up that row's form ID. The page heading, intro and layout are in code, not in HubSpot.
 12. Client logos are a static even grid, not a marquee (Mac, 22 Nov 2026, harvey.ai customer wall as the reference):
    `logo_grid()` in build_home.py with `src/logogrid.css`, 6 columns, 4 at tablet, 3 on phones.
 

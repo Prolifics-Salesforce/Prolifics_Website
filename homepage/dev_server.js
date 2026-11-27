@@ -1,12 +1,12 @@
-// Local test server: the built site from dist/ plus the real /api/lead function.
+// Local test server: the built site from dist/ plus the real /api functions (lead form, happenings).
 //   node dev_server.js          then open http://localhost:3000/contact
 // Settings come from .env.local in this folder (git ignored). The file is read again on every submission, so you can
 // edit it without restarting. With HUBSPOT_ACCESS_TOKEN and HUBSPOT_FORM_ID set, a submission here creates a REAL
 // contact in HubSpot. Set HUBSPOT_DRY_RUN=1 to test without sending anything.
 const http = require("http"), fs = require("fs"), path = require("path");
 const ROOT = __dirname, DIST = path.join(ROOT, "dist"), PORT = Number(process.env.PORT) || 3000;
-const handler = require(path.join(ROOT, "src", "api", "lead.js"));
-const KEYS = ["HUBSPOT_ACCESS_TOKEN", "HUBSPOT_TOKEN", "HUBSPOT_FORM_ID", "HUBSPOT_PORTAL_ID", "HUBSPOT_SUBSCRIPTION_ID", "HUBSPOT_INTEREST_PROPERTY", "HUBSPOT_DRY_RUN"];
+const API = { "/api/lead": require(path.join(ROOT, "src", "api", "lead.js")), "/api/happenings": require(path.join(ROOT, "src", "api", "happenings.js")) };
+const KEYS = ["HUBSPOT_ACCESS_TOKEN", "HUBSPOT_TOKEN", "HUBSPOT_FORM_ID", "HUBSPOT_PORTAL_ID", "HUBSPOT_SUBSCRIPTION_ID", "HUBSPOT_INTEREST_PROPERTY", "HUBSPOT_DRY_RUN", "HUBDB_HAPPENINGS_TABLE"];
 const TYPES = { ".html": "text/html; charset=utf-8", ".js": "text/javascript", ".json": "application/json", ".png": "image/png",
                 ".webp": "image/webp", ".jpg": "image/jpeg", ".svg": "image/svg+xml", ".css": "text/css" };
 
@@ -21,14 +21,21 @@ function loadEnv() {
 }
 
 http.createServer((req, res) => {
-  const url = decodeURIComponent(req.url.split("?")[0]);
-  if (url === "/api/lead") {
+  let url = decodeURIComponent(req.url.split("?")[0]);
+  const handler = API[url];
+  if (handler && req.method !== "POST") {
+    loadEnv();
+    res.on("finish", () => console.log(req.method + " " + req.url + " -> " + res.statusCode));
+    return Promise.resolve(handler(req, res)).catch((e) => { console.error(e); res.statusCode = 500; res.end(); });
+  }
+  if (/^\/happenings\/[^/]+\/?$/.test(url)) url = "/happenings/detail";   // same rewrite as dist/vercel.json
+  if (handler) {
     let raw = ""; req.on("data", (c) => (raw += c));
     req.on("end", () => {
       loadEnv();
       req.body = raw;   // the function parses JSON and form posts itself
       const mode = process.env.HUBSPOT_DRY_RUN === "1" ? "dry run, nothing sent" : (process.env.HUBSPOT_ACCESS_TOKEN || process.env.HUBSPOT_TOKEN) ? "sending to HubSpot" : "no token set";
-      res.on("finish", () => console.log("POST /api/lead -> " + res.statusCode + " (" + mode + ")"));
+      res.on("finish", () => console.log("POST " + url + " -> " + res.statusCode + " (" + mode + ")"));
       Promise.resolve(handler(req, res)).catch((e) => { console.error(e); res.statusCode = 500; res.end(); });
     });
     return;

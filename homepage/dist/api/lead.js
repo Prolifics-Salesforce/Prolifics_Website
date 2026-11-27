@@ -16,12 +16,17 @@
 //                       property, the chosen area is written as the first line of the message instead.
 //   HUBSPOT_DRY_RUN     "1" returns the payload without calling HubSpot (for local testing).
 //
+// Happenings registrations: when the form carries a "happening" field (the row's slug), the submission goes to that
+// row's own HubSpot form. The form ID is looked up here from the HubDB table; one sent by the browser is never used.
+//
 // The HubSpot form must have reCAPTCHA off: HubSpot rejects server submissions otherwise.
 // Nothing a visitor typed is written to the logs: errors log the HubSpot status and error types only.
 //
 // Requests: JSON { fields: {...}, context: { pageUri, pageName } } from pages.js, answered with JSON; or a plain form
 // post (visitor without JavaScript), answered with a redirect to /thank-you.
 
+const hubdb = require("./_hubdb.js");
+const GUID = /^[0-9a-f]{8}-[0-9a-f]{4}-[0-9a-f]{4}-[0-9a-f]{4}-[0-9a-f]{12}$/i;
 const ALLOWED = ["firstname", "lastname", "email", "phone", "company", "jobtitle", "country", "message"];   // default HubSpot contact properties
 const MAX = { message: 5000 };
 const EMAIL = /^[^@\s]+@[^@\s]+\.[^@\s]{2,}$/;
@@ -106,10 +111,18 @@ module.exports = async function handler(req, res) {
 
   if (process.env.HUBSPOT_DRY_RUN === "1") return reply(200, { ok: true, dryRun: true, payload });
 
-  const token = process.env.HUBSPOT_ACCESS_TOKEN || process.env.HUBSPOT_TOKEN, formId = process.env.HUBSPOT_FORM_ID, portal = process.env.HUBSPOT_PORTAL_ID || "52356695";
+  const token = process.env.HUBSPOT_ACCESS_TOKEN || process.env.HUBSPOT_TOKEN, portal = process.env.HUBSPOT_PORTAL_ID || "52356695";
+  let formId = process.env.HUBSPOT_FORM_ID;
   if (!token || !formId) {
     console.error("Lead form is not configured: set HUBSPOT_ACCESS_TOKEN and HUBSPOT_FORM_ID.");
     return reply(500, { ok: false, error: "The form is not configured" });
+  }
+  const happening = clean(input.happening, 120);
+  if (happening) {
+    let row = null;
+    try { row = await hubdb.find(happening); } catch (e) { console.error("Happenings lookup failed: " + e.message); }
+    if (!row || !GUID.test(row.formId)) return reply(400, { ok: false, error: "Registration is not open for this happening" });
+    formId = row.formId;
   }
   const url = "https://api.hsforms.com/submissions/v3/integration/secure/submit/" + portal + "/" + formId;
   try {
