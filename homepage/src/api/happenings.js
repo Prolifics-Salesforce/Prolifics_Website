@@ -53,6 +53,6 @@ module.exports = async function handler(req, res) {
     return send(200, { items: (await hubdb.happenings()).map((x) => view(x, false)) }, true);
   } catch (e) {
     console.error("Happenings could not be read: " + e.message);
-    return send(502, { error: "Happenings are not available right now" });
+    return send(502, { error: "Events are not available right now" });
   }
 };

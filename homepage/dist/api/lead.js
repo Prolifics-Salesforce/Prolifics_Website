@@ -121,7 +121,7 @@ module.exports = async function handler(req, res) {
   if (happening) {
     let row = null;
     try { row = await hubdb.find(happening); } catch (e) { console.error("Happenings lookup failed: " + e.message); }
-    if (!row || !GUID.test(row.formId)) return reply(400, { ok: false, error: "Registration is not open for this happening" });
+    if (!row || !GUID.test(row.formId)) return reply(400, { ok: false, error: "Registration is not open for this event" });
     formId = row.formId;
   }
   const url = "https://api.hsforms.com/submissions/v3/integration/secure/submit/" + portal + "/" + formId;

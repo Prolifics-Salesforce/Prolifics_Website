@@ -5,7 +5,8 @@
 // contact in HubSpot. Set HUBSPOT_DRY_RUN=1 to test without sending anything.
 const http = require("http"), fs = require("fs"), path = require("path");
 const ROOT = __dirname, DIST = path.join(ROOT, "dist"), PORT = Number(process.env.PORT) || 3000;
-const API = { "/api/lead": require(path.join(ROOT, "src", "api", "lead.js")), "/api/happenings": require(path.join(ROOT, "src", "api", "happenings.js")) };
+const API = { "/api/lead": require(path.join(ROOT, "src", "api", "lead.js")), "/api/happenings": require(path.join(ROOT, "src", "api", "happenings.js")),
+              "/api/resources": require(path.join(ROOT, "src", "api", "resources.js")) };
 const KEYS = ["HUBSPOT_ACCESS_TOKEN", "HUBSPOT_TOKEN", "HUBSPOT_FORM_ID", "HUBSPOT_PORTAL_ID", "HUBSPOT_SUBSCRIPTION_ID", "HUBSPOT_INTEREST_PROPERTY", "HUBSPOT_DRY_RUN", "HUBDB_HAPPENINGS_TABLE"];
 const TYPES = { ".html": "text/html; charset=utf-8", ".js": "text/javascript", ".json": "application/json", ".png": "image/png",
                 ".webp": "image/webp", ".jpg": "image/jpeg", ".svg": "image/svg+xml", ".css": "text/css" };
@@ -28,7 +29,9 @@ http.createServer((req, res) => {
     res.on("finish", () => console.log(req.method + " " + req.url + " -> " + res.statusCode));
     return Promise.resolve(handler(req, res)).catch((e) => { console.error(e); res.statusCode = 500; res.end(); });
   }
-  if (/^\/happenings\/[^/]+\/?$/.test(url)) url = "/happenings/detail";   // same rewrite as dist/vercel.json
+  if (/^\/happenings(\/.*)?$/.test(url)) { res.statusCode = 307; res.setHeader("Location", url.replace("/happenings", "/events")); return res.end(); }
+  if (/^\/events\/[^/]+\/?$/.test(url)) url = "/events/detail";   // same rewrites as dist/vercel.json
+  if (/^\/resources\/article\/[^/]+\/?$/.test(url)) url = "/resources/article";
   if (handler) {
     let raw = ""; req.on("data", (c) => (raw += c));
     req.on("end", () => {

@@ -512,13 +512,42 @@ def resources_page():
     for k in used:
         cards = cards.replace('<a class="cc sw" href="%s"' % LIB[k]["url"], '<a class="cc sw" data-g="%s" href="%s"' % (LIB[k]["ind"][0], LIB[k]["url"]), 1)
     body = (P.hero("Resource Center", page["h1"], lead_of(page), "r03", (str(len(used)), "published case studies, filterable by industry"), ("Case studies", "#cases"))
-            + subnav([("guides", "Planning guides"), ("cases", "Case studies")], ("Talk to Our Experts", "/contact"))
+            + subnav([("guides", "Planning guides"), ("library", "Library"), ("cases", "Case studies")], ("Talk to Our Experts", "/contact"))
             + stack("guides", "Planning guides", "Questions to answer before you start", "", '<div class="gd2s">%s</div>' % guides)
+            + stack("library", "Library", "Blogs, case studies and news from Prolifics", "Everything published in the Prolifics resource center, newest first. Filter by type or search by topic.", library())
             + '<section class="ps alt" id="cases"><div class="wrap"><header class="ps-h wide" data-r><p class="eyebrow">Case studies</p><h2>Published results from Prolifics and its group companies</h2>'
               '<p class="ps-p">Each card links to the published case study. Filter by industry.</p></header><div class="fcs2" role="group" aria-label="Filter by industry">%s</div><div id="cs-list">%s</div>'
-              '<p class="note"><a class="lnk" href="https://prolifics.ai/resource-center" rel="noopener">Browse the full corporate resource library %s</a></p></div></section>' % ("".join(chips), cards, arrow())
-            + contact("Discuss your priorities", "Connect these planning questions to your delivery priorities across AI, data, Salesforce, ServiceNow and SAP."))
+              '<p class="note"><a class="lnk" href="#library">Browse every case study in the library %s</a></p></div></section>' % ("".join(chips), cards, arrow())
+            + contact("Discuss your priorities", "Connect these planning questions to your delivery priorities across AI, data, Salesforce, ServiceNow and SAP.")
+            + rs_assets())
     return shell("Resource Center", page["desc"], body, [("Home", "/"), ("Resources", None)])
+
+# The library and the article page are filled in the browser by resources.js from /api/resources, which reads the
+# corporate site (prolifics.ai) live. A post published there shows here within minutes; nothing needs rebuilding.
+# dist/vercel.json rewrites /resources/article/<slug> to the one article shell.
+RS_CSS = open(os.path.join(HERE, "resources.css"), encoding="utf-8").read()
+RS_JS = open(os.path.join(HERE, "resources.js"), encoding="utf-8").read()
+def rs_assets(): return "<style>%s</style><script>%s</script>" % (RS_CSS, RS_JS)
+
+def library():
+    return ('<div class="rs-bar"><div class="rs-f" id="rs-filters" role="group" aria-label="Filter by type" hidden></div>'
+            '<form class="rs-s" id="rs-search" role="search"><input type="search" id="rs-q" name="q" maxlength="80" placeholder="Search the library" aria-label="Search the library">'
+            '<button type="submit">Search</button></form></div>'
+            '<div class="rs-list" id="rs-list" aria-live="polite"><p class="rs-note">Loading</p></div>'
+            '<div class="rs-foot"><p class="rs-count" id="rs-count"></p><button type="button" class="rs-more" id="rs-more" hidden>Load more</button></div>'
+            '<noscript><p class="rs-note">Turn on JavaScript to browse the library, or <a href="/contact">contact us</a>.</p></noscript>')
+
+def resource_article():
+    body = ('<section class="rs-top"><div class="wrap"><p class="rs-note" id="rs-wait">Loading</p>'
+            '<article class="rs-art" id="rs-article" hidden><p class="kick" id="rs-type"></p><h1 id="rs-title"></h1><p class="rs-date" id="rs-date"></p>'
+            '<figure class="rs-fig" id="rs-fig" hidden></figure><div class="rs-body" id="rs-body"></div>'
+            '<a class="lnk" href="/resources#library">All resources %s</a></article>'
+            '<noscript><p class="rs-note">Turn on JavaScript to read this resource, or <a href="/contact">contact us</a>.</p></noscript></div></section>'
+            '<section class="rs-rel" id="rs-rel" hidden><div class="wrap"><h2 id="rs-rel-h">More resources</h2><div class="rs-list" id="rs-rel-list"></div></div></section>'
+            % arrow()
+            + contact("Discuss your priorities", "Connect what you have read to your delivery priorities across AI, data, Salesforce, ServiceNow and SAP.")
+            + rs_assets())
+    return shell("Resource Center", "Blogs, case studies and news from Prolifics.", body, [("Home", "/"), ("Resources", "/resources"), ("Article", None)])
 
 def guide_page(path):
     page = REF[path]; s = page["sections"]
@@ -563,13 +592,13 @@ HP_JS = open(os.path.join(HERE, "happenings.js"), encoding="utf-8").read()
 def hp_assets(): return "<style>%s</style><script>%s</script>" % (HP_CSS, HP_JS)
 
 def happenings_page():
-    body = ('<section class="hp-top"><div class="wrap"><p class="kick">Happenings</p><h1>Events and campaigns at Prolifics</h1>'
+    body = ('<section class="hp-top"><div class="wrap"><p class="kick">Events</p><h1>Events and campaigns at Prolifics</h1>'
             '<p class="ph-lead">Where to meet Prolifics next: events, webinars and campaigns from our teams and group companies.</p></div></section>'
             '<section class="hp-sec"><div class="wrap"><div class="hp-f" id="hp-filters" hidden></div>'
-            '<div class="hp-list" id="hp-list" aria-live="polite"><p class="hp-note">Loading happenings</p></div>'
-            '<noscript><p class="hp-note">Turn on JavaScript to see current happenings, or <a href="/contact">contact us</a>.</p></noscript></div></section>'
+            '<div class="hp-list" id="hp-list" aria-live="polite"><p class="hp-note">Loading events</p></div>'
+            '<noscript><p class="hp-note">Turn on JavaScript to see current events, or <a href="/contact">contact us</a>.</p></noscript></div></section>'
             + hp_assets())
-    return shell("Happenings", "Events, webinars and campaigns from Prolifics and its group companies.", body, [("Home", "/"), ("Happenings", None)])
+    return shell("Events", "Events, webinars and campaigns from Prolifics and its group companies.", body, [("Home", "/"), ("Resources", "/resources"), ("Events", None)])
 
 def happening_detail():
     form = P.hs_form("general").replace('<form class="lf"', '<form class="lf" data-ok="You are registered. We will email you the details." ', 1).replace(
@@ -577,11 +606,11 @@ def happening_detail():
     body = ('<section class="hp-top hp-one" id="hp-one"><div class="wrap"><p class="hp-note" id="hp-wait">Loading</p>'
             '<div class="hp-dg" id="hp-detail" hidden><article class="hp-art"><p class="kick" id="hp-type"></p><h1 id="hp-name"></h1>'
             '<dl class="hp-meta" id="hp-meta"></dl><figure class="hp-fig" id="hp-fig" hidden></figure><p class="ph-lead" id="hp-sum"></p>'
-            '<div class="hp-body" id="hp-body"></div><a class="lnk" href="/happenings">All happenings %s</a></article>'
+            '<div class="hp-body" id="hp-body"></div><a class="lnk" href="/events">All events %s</a></article>'
             '<aside class="hp-reg" id="hp-reg" hidden><h2 id="hp-reg-h">Register</h2><div class="cf">%s</div></aside></div>'
-            '<noscript><p class="hp-note">Turn on JavaScript to see this happening, or <a href="/contact">contact us</a>.</p></noscript></div></section>'
+            '<noscript><p class="hp-note">Turn on JavaScript to see this event, or <a href="/contact">contact us</a>.</p></noscript></div></section>'
             % (arrow(), form) + hp_assets())
-    return shell("Happenings", "Events, webinars and campaigns from Prolifics.", body, [("Home", "/"), ("Happenings", "/happenings"), ("Details", None)])
+    return shell("Events", "Events, webinars and campaigns from Prolifics.", body, [("Home", "/"), ("Resources", "/resources"), ("Events", "/events"), ("Details", None)])
 
 # ---------------------------------------------------------------- group companies
 def src_link(u): return ' <a class="src" href="%s" rel="noopener">source</a>' % E(u) if u else ""
@@ -656,7 +685,7 @@ def all_pages():
                   "about/social-impact": lambda: simple_about("/about/social-impact", "r02", "Social Impact"),
                   "about/esg": lambda: simple_about("/about/esg", "i_powerlines_1", "ESG Vision"),
                   "partnerships": partnerships_page, "resources": resources_page, "contact": contact_page, "thank-you": thanks_page,
-                  "happenings": happenings_page, "happenings/detail": happening_detail})
+                  "events": happenings_page, "events/detail": happening_detail, "resources/article": resource_article})
     for t, d, u, im in GUIDES: pages[u.lstrip("/")] = (lambda u=u: guide_page(u))
     pages["group"] = group_landing
     for k in GROUP_PAGES: pages["group/" + k] = (lambda k=k: group_page(k))
@@ -693,10 +722,13 @@ if __name__ == "__main__":
         if dashes or ex: print("  %s: dashes %d, exclamation %d" % (path, dashes, ex))
     vc = {"headers": [{"source": "/(.*)", "headers": [{"key": "X-Robots-Tag", "value": "noindex, nofollow"}]}], "trailingSlash": False,
           # Solutions removed from the site (Mac, 23 Nov 2026): old links land on Services
-          "redirects": [{"source": "/solutions", "destination": "/services", "permanent": False},
+          "redirects": [{"source": "/happenings", "destination": "/events", "permanent": False},   # renamed to Events, 28 Nov 2026
+                        {"source": "/happenings/:slug", "destination": "/events/:slug", "permanent": False},
+                        {"source": "/solutions", "destination": "/services", "permanent": False},
                         {"source": "/solutions/:p*", "destination": "/services", "permanent": False}],
-          # every happening shares one page shell; the script on it reads the slug from the address
-          "rewrites": [{"source": "/happenings/:slug", "destination": "/happenings/detail"}]}
+          # every happening, and every library article, shares one page shell; the script on it reads the slug from the address
+          "rewrites": [{"source": "/events/:slug", "destination": "/events/detail"},
+                       {"source": "/resources/article/:slug", "destination": "/resources/article"}]}
     json.dump(vc, open(os.path.join(DIST, "vercel.json"), "w"), indent=1)
     shutil.copytree(os.path.join(HERE, "api"), os.path.join(DIST, "api"), dirs_exist_ok=True)   # /api/lead: sends form submissions to HubSpot
     print("%d pages, dashes %d, exclamation %d" % (len(pages) + 1, total_d, total_x))

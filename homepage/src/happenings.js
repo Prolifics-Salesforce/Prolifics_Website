@@ -30,7 +30,7 @@
   if (list) {
     var bar = document.getElementById("hp-filters");
     function row(x) {
-      var a = el("a", "hp-i" + (x.featured ? " feat" : "")); a.href = "/happenings/" + encodeURIComponent(x.slug); a.setAttribute("data-type", (x.type || "").toLowerCase());
+      var a = el("a", "hp-i" + (x.featured ? " feat" : "")); a.href = "/events/" + encodeURIComponent(x.slug); a.setAttribute("data-type", (x.type || "").toLowerCase());
       if (x.featured) {
         var inn = el("span", "hp-in"), w = when(x); inn.appendChild(meta(x)); if (w) inn.appendChild(el("span", "hp-dl", w));
         inn.appendChild(el("strong", "hp-n", x.name)); if (x.summary) inn.appendChild(el("span", "hp-x", x.summary)); inn.appendChild(go("View details"));
@@ -58,27 +58,27 @@
     get("/api/happenings").then(function (r) {
       if (!r.ok) throw new Error("unavailable");
       var items = r.data.items || []; list.textContent = "";
-      if (!items.length) { list.appendChild(el("p", "hp-note", "There are no happenings to show right now. Please check back soon.")); return; }
+      if (!items.length) { list.appendChild(el("p", "hp-note", "There are no events to show right now. Please check back soon.")); return; }
       items.forEach(function (x) { list.appendChild(row(x)); }); filters(items);
     }).catch(function () {
-      list.textContent = ""; list.appendChild(el("p", "hp-note", "Happenings could not be loaded. Please try again in a moment."));
+      list.textContent = ""; list.appendChild(el("p", "hp-note", "Events could not be loaded. Please try again in a moment."));
     });
   }
 
-  /* ---------------- detail page: the address is /happenings/<slug> */
+  /* ---------------- detail page: the address is /events/<slug> */
   var one = document.getElementById("hp-detail");
   if (one) {
     var wait = document.getElementById("hp-wait"), seg = location.pathname.replace(/\/+$/, "").split("/").pop(), slug = "";
     try { slug = decodeURIComponent(seg); } catch (e) { slug = ""; }
-    function missing(msg) { wait.textContent = msg + " "; var a = el("a", "", "See all happenings"); a.href = "/happenings"; wait.appendChild(a); }
-    if (!slug || slug === "detail" || slug === "happenings") missing("This happening is not available.");
+    function missing(msg) { wait.textContent = msg + " "; var a = el("a", "", "See all events"); a.href = "/events"; wait.appendChild(a); }
+    if (!slug || slug === "detail" || slug === "events") missing("This event is not available.");
     else get("/api/happenings?slug=" + encodeURIComponent(slug)).then(function (r) {
-      if (r.status === 404) return missing("This happening is not available.");
+      if (r.status === 404) return missing("This event is not available.");
       if (!r.ok) throw new Error("unavailable");
       var x = r.data.item, s = (x.status || "").toLowerCase(), past = s === "past";
       document.title = x.name + " | Prolifics";
       var crumb = document.querySelector(".crumbs [aria-current]"); if (crumb) crumb.textContent = x.name;
-      document.getElementById("hp-type").textContent = x.type || "Happening";
+      document.getElementById("hp-type").textContent = x.type || "Event";
       document.getElementById("hp-name").textContent = x.name;
       var dl = document.getElementById("hp-meta");
       [["When", when(x)], ["Where", x.location], ["Status", s === "live" ? "Live now" : past ? "Past" : ""]].forEach(function (p) {
@@ -96,6 +96,6 @@
         reg.hidden = false;
       } else one.classList.add("solo");
       wait.hidden = true; one.hidden = false;
-    }).catch(function () { missing("This happening could not be loaded."); });
+    }).catch(function () { missing("This event could not be loaded."); });
   }
 })();

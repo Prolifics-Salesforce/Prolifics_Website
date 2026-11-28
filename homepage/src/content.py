@@ -141,6 +141,16 @@ ABOUT = [
                  ("Resource Center", "Blogs, news, events and case studies", "/resources")]),
 ]
 
+# Resources menu (27 Nov 2026): the library types open the live library on /resources already filtered; Happenings
+# moved here from the main menu. Videos is the Prolifics YouTube channel, as on prolifics.ai.
+RESOURCES_MENU = [
+    ("Library", [("Resource Center", "Guides, library and case studies in one place", "/resources"), ("Blogs", "Practical thinking on AI, data and platforms", "/resources?type=blog#library"),
+                 ("Case Studies", "Published client results", "/resources?type=case-studies#library"), ("News", "Partner and company news", "/resources?type=news#library"),
+                 ("One Pagers", "Short overviews of what we offer", "/resources?type=one-pager#library")]),
+    ("Events and more", [("Events", "Events, webinars and campaigns", "/events"), ("Planning Guides", "Questions to answer before you start", "/resources#guides"),
+                         ("Videos", "Prolifics on YouTube", "https://www.youtube.com/@ProlificsTV")]),
+]
+
 PARTNERS = ["IBM", "Salesforce", "ServiceNow", "SAP", "Microsoft", "Boomi", "AWS", "MuleSoft", "Databricks", "Red Hat",
             "Snowflake", "Google Cloud", "EDB", "Tricentis"]
 
@@ -241,7 +251,7 @@ FOOTER = [
                ("Prolifics Testing", "/group/prolifics-testing"), ("Tier 2 Consulting", "/group/tier-2-consulting"), ("Partnerships", "/partnerships")]),
     ("Industries", [("All industries", "/industries")] + [(i[0], i[2]) for i in INDUSTRIES]),
     ("Company", [("About Us", "/about"), ("Leadership", "/about/leadership"), ("Careers", "/about/careers"), ("Locations", "/about/locations"),
-                 ("Resource Center", "/resources"), ("Happenings", "/happenings"), ("Contact", "/contact")]),
+                 ("Resource Center", "/resources"), ("Events", "/events"), ("Contact", "/contact")]),
 ]
 LEGAL = [("Legal Notice", "https://prolifics.ai/legal-notice"), ("Privacy Policy", "https://prolifics.ai/privacy-policy"),
          ("Cookie Policy", "https://prolifics.ai/cookie-policy"), ("CCPA", "https://prolifics.ai/ccpa")]

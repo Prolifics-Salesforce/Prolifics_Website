@@ -61,9 +61,14 @@ def mega_about():
              '<em>48 years, 2,000+ experts, 13 offices in 6 countries</em></span></a>' % img("promo", ""))
     return '<div class="mega" id="mega-about" hidden><div class="wrap mega-in abt"><div class="mgs g2">%s</div>%s</div></div>' % (cols, promo)
 
+def mega_resources():
+    cols = "".join('<div class="mg"><h4>%s</h4><ul class="rich">%s</ul></div>' % (E(h), "".join(
+        '<li><a href="%s"%s><b>%s</b><span>%s</span></a></li>' % (u, ' rel="noopener"' if u.startswith("http") else "", E(t), E(d)) for t, d, u in links)) for h, links in RESOURCES_MENU)
+    return '<div class="mega" id="mega-resources" hidden><div class="wrap mega-in"><div class="mgs g2">%s</div></div></div>' % cols
+
 def header():
     nav = [("Services", "services"), ("Industries", "industries"), ("Partnerships", "/partnerships"),
-           ("Resources", "/resources"), ("Happenings", "/happenings"), ("About Us", "about")]
+           ("Resources", "resources"), ("About Us", "about")]
     lis = "".join(('<li><a class="nv" href="%s">%s</a></li>' % (k, E(t))) if k.startswith("/") else
                   ('<li><button type="button" class="nv" aria-expanded="false" aria-controls="mega-%s" data-mega="mega-%s">%s'
                    '<svg viewBox="0 0 12 12" aria-hidden="true"><path d="M3 4.5l3 3 3-3" fill="none" stroke="currentColor" stroke-width="1.5"/></svg></button></li>' % (k, k, E(t)))
@@ -75,7 +80,7 @@ def header():
             '<img class="lg-w" src="assets/prolifics-logo-white.png" alt="Prolifics" width="140" height="21"><img class="lg-c" src="assets/prolifics-logo.png" alt="" width="128" height="44"></a>'
             '<nav aria-label="Main"><ul class="nav">%s</ul></nav><a class="btn btn-c hdr-cta" href="/contact">Talk to Our Experts</a>'
             '<button type="button" class="burger" aria-label="Open menu" aria-expanded="false" aria-controls="drawer"><span></span><span></span><span></span></button></div>'
-            '%s%s%s</header>' % (util, lis, mega_services(), mega_industries(), mega_about()))
+            '%s%s%s%s</header>' % (util, lis, mega_services(), mega_industries(), mega_resources(), mega_about()))
 
 def drawer():
     def acc(title, inner):
@@ -86,10 +91,11 @@ def drawer():
     sol = '<a class="ov" href="/solutions">All solutions</a>' + "".join('<p class="dh">%s</p>%s' % (E(g), "".join('<a href="%s">%s</a>' % (u, E(t)) for t, d, u, ic, tl in items)) for g, items in SOLUTIONS)
     ind = '<a class="ov" href="/industries">Explore all industries</a>' + "".join('<a href="%s">%s</a>' % (u, E(t)) for t, d, u, ic, im in INDUSTRIES)
     abt = "".join('<p class="dh">%s</p>%s' % (E(h), "".join('<a href="%s">%s</a>' % (u, E(t)) for t, d, u in links)) for h, links in ABOUT)
+    res = "".join('<p class="dh">%s</p>%s' % (E(h), "".join('<a href="%s"%s>%s</a>' % (u, ' rel="noopener"' if u.startswith("http") else "", E(t)) for t, d, u in links)) for h, links in RESOURCES_MENU)
     return ('<div class="drawer" id="drawer" hidden><div class="dr-in"><p class="dh top">Services</p>%s%s%s'
-            '<a class="dl" href="/partnerships">Partnerships</a><a class="dl" href="/resources">Resources</a><a class="dl" href="/happenings">Happenings</a>%s'
+            '<a class="dl" href="/partnerships">Partnerships</a>%s%s'
             '<a class="btn btn-p blk" href="/contact">Talk to Our Experts</a></div></div>'
-            % (svc, tech, acc("Industries", ind), acc("About Us", abt)))
+            % (svc, tech, acc("Industries", ind), acc("Resources", res), acc("About Us", abt)))
 
 # ---------------------------------------------------------------- hero: 48 years
 def hero():

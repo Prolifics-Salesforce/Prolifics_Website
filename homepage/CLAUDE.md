@@ -99,6 +99,18 @@ Both previews redirect inner pages (/services/..., /solutions/..., /about, /cont
    build_site.py; `dist/vercel.json` rewrites `/happenings/<slug>` to `/happenings/detail`. Rows with status Hidden
    are not shown; Featured first, then by start date, Past last. Registration posts to `/api/lead` with the slug and
    the server looks up that row's form ID. The page heading, intro and layout are in code, not in HubSpot.
+20. Resource library (27 Nov 2026): the "Library" section on `/resources` and the article page
+   `/resources/article/<slug>` show everything in the prolifics.ai resource center (blogs, case studies, news,
+   briefs, one pagers), read live from its public WordPress listing. `src/api/resources.js` fetches and caches it
+   (about five minutes; override the source with `RESOURCES_SOURCE`), cleans article HTML on the server and turns
+   links to other library items into links on this site. `src/resources.js` and `src/resources.css` render the
+   list (type filters, search, load more) and the article. `dist/vercel.json` rewrites `/resources/article/<slug>`
+   to the one shell. Article text is shown as published on prolifics.ai, so the house rules below (dashes, spelling)
+   are not applied to it. The planning guides and the curated case study cards on the page are still built in code.
+21. Menu and naming (28 Nov 2026): Resources is a dropdown in the header (`RESOURCES_MENU` in content.py,
+   `mega_resources()` in build_home.py) and Happenings sits inside it, renamed Events. Visitors see "Events" and the
+   addresses are `/events` and `/events/<slug>`; `/happenings` addresses redirect there. Only the name changed: the
+   files (`happenings.js`, `happenings.css`), `/api/happenings` and the HubDB table are still called happenings.
 12. Client logos are a static even grid, not a marquee (Mac, 22 Nov 2026, harvey.ai customer wall as the reference):
    `logo_grid()` in build_home.py with `src/logogrid.css`, 6 columns, 4 at tablet, 3 on phones.
 

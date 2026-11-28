@@ -13,6 +13,16 @@
  "trailingSlash": false,
  "redirects": [
   {
+   "source": "/happenings",
+   "destination": "/events",
+   "permanent": false
+  },
+  {
+   "source": "/happenings/:slug",
+   "destination": "/events/:slug",
+   "permanent": false
+  },
+  {
    "source": "/solutions",
    "destination": "/services",
    "permanent": false
@@ -25,8 +35,12 @@
  ],
  "rewrites": [
   {
-   "source": "/happenings/:slug",
-   "destination": "/happenings/detail"
+   "source": "/events/:slug",
+   "destination": "/events/detail"
+  },
+  {
+   "source": "/resources/article/:slug",
+   "destination": "/resources/article"
   }
  ]
 }
