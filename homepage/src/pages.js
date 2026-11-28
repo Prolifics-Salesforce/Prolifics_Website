@@ -90,8 +90,14 @@
           var ok = document.createElement("div"), h = document.createElement("h3"), t = document.createElement("div");
           ok.className = "lf-ok"; ok.setAttribute("role", "status"); ok.tabIndex = -1; h.textContent = "Thank you";
           t.textContent = f.getAttribute("data-ok") || "A Prolifics expert in your industry and platform will get back to you within one business day.";
+          var reg = f.querySelector('input[name="happening"]'), trap = f.querySelector('input[name="website_url"]');
           ok.appendChild(h); ok.appendChild(t); f.innerHTML = ""; f.appendChild(ok);
           f.firstChild.focus();
+          // Tell Tag Manager a lead came in. Only the event name and which form: never anything the visitor typed.
+          if (!(trap && trap.value)) {
+            window.dataLayer = window.dataLayer || [];
+            window.dataLayer.push({ event: "generate_lead", form_name: reg && reg.value ? "event_registration" : "website_contact" });
+          }
         })
         .catch(function () {
           btn.disabled = false; msg.className = "lf-m bad";

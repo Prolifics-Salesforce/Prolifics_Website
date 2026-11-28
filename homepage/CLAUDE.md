@@ -112,6 +112,12 @@ Both previews redirect inner pages (/services/..., /solutions/..., /about, /cont
    and the curated case study cards on the page are still built in code; remove the coded guides once the same
    guides are published in HubSpot, or they will show twice. The first version read prolifics.ai's WordPress
    listing directly; that was replaced.
+22. Google Tag Manager (28 Nov 2026): container GTM-P5ZMJ49Q on every page, `GTM_HEAD` and `GTM_BODY` in
+   build_home.py (set `GTM_ID` in the environment at build time to change it), used by both page shells. GA4
+   (G-4D8HT83ENT) is a tag inside the container: never add a separate gtag snippet. `pages.js` pushes
+   `generate_lead` to the dataLayer after a successful form submission, with `form_name` `website_contact` or
+   `event_registration` and nothing the visitor typed. Every navigation is a full page load, so no virtual page
+   views. There is no cookie consent banner yet.
 21. Menu and naming (28 Nov 2026): Resources is a dropdown in the header (`RESOURCES_MENU` in content.py,
    `mega_resources()` in build_home.py) and Happenings sits inside it, renamed Events. Visitors see "Events" and the
    addresses are `/events` and `/events/<slug>`; `/happenings` addresses redirect there. Only the name changed: the

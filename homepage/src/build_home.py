@@ -21,6 +21,18 @@ def arrow():
 def label(n, t, light=False):
     return '<p class="lab%s"><span>%s</span>%s</p>' % (" lab-l" if light else "", n, E(t))
 
+# ---------------------------------------------------------------- Google Tag Manager (28 Nov 2026)
+# The standard container snippet, on every page: the script high in <head>, the noscript frame first in <body>.
+# Google Analytics 4 runs as a tag inside the container, so there is no separate gtag snippet. Change the container
+# by setting GTM_ID in the environment when building, or by editing the default here.
+GTM_ID = os.environ.get("GTM_ID", "GTM-P5ZMJ49Q")
+GTM_HEAD = ("<!-- Google Tag Manager --><script>(function(w,d,s,l,i){w[l]=w[l]||[];w[l].push({'gtm.start':new Date().getTime(),event:'gtm.js'});"
+            "var f=d.getElementsByTagName(s)[0],j=d.createElement(s),dl=l!='dataLayer'?'&l='+l:'';j.async=true;"
+            "j.src='https://www.googletagmanager.com/gtm.js?id='+i+dl;f.parentNode.insertBefore(j,f);"
+            "})(window,document,'script','dataLayer','" + GTM_ID + "');</script><!-- End Google Tag Manager -->")
+GTM_BODY = ('<!-- Google Tag Manager (noscript) --><noscript><iframe src="https://www.googletagmanager.com/ns.html?id=' + GTM_ID + '" '
+            'height="0" width="0" style="display:none;visibility:hidden"></iframe></noscript><!-- End Google Tag Manager (noscript) -->')
+
 # ---------------------------------------------------------------- header and mega menus (menu from the reference site)
 def mega_services():
     rail, panes = [], []
@@ -284,14 +296,14 @@ def page(final=False):
     ld = {"@context": "https://schema.org", "@type": "Organization", "name": "Prolifics", "url": "https://prolifics.ai/", "foundingDate": "1978",
           "foundingLocation": "New York", "description": "AI, data and forward deployed engineering for the enterprise across data platforms, Salesforce, ServiceNow and SAP."}
     preload = '<link rel="preload" as="image" href="assets/img/%s.jpg">' % ERAS[0][4]
-    return ('<!doctype html><html lang="en"><head><meta charset="utf-8"><meta name="viewport" content="width=device-width, initial-scale=1">%s'
+    return ('<!doctype html><html lang="en"><head><meta charset="utf-8"><meta name="viewport" content="width=device-width, initial-scale=1">%s%s'
             '<title>Prolifics | AI, Data & Forward Deployed Engineering</title>'
             '<meta name="description" content="48 years of making enterprise technology work. Prolifics builds and runs AI across data platforms, Salesforce, ServiceNow and SAP, with forward deployed engineering pods.">'
             '<script>document.documentElement.className+=" js"</script><meta name="theme-color" content="#FBFAF7"><link rel="icon" href="assets/favicon.png">%s<link rel="preconnect" href="https://fonts.googleapis.com"><link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>'
             '<link href="https://fonts.googleapis.com/css2?family=Inter+Tight:wght@500;600;700;800&family=Inter:wght@400;500;600&display=swap" rel="stylesheet">'
-            '<style>%s</style><script type="application/ld+json">%s</script></head><body class="top">'
+            '<style>%s</style><script type="application/ld+json">%s</script></head><body class="top">%s'
             '<a class="skip" href="#main">Skip to content</a>%s%s<main id="main">%s%s%s%s%s%s%s%s%s%s%s</main>%s<script>%s</script></body></html>'
-            % (robots, preload, CSS, json.dumps(ld), header(), drawer(), hero(), logos(), stats() + standing(), practices(), fde(), proof(), industries(),
+            % (GTM_HEAD, robots, preload, CSS, json.dumps(ld), GTM_BODY, header(), drawer(), hero(), logos(), stats() + standing(), practices(), fde(), proof(), industries(),
                platforms(), group(), guides(), cta(), footer(), JS))
 
 def copy_images():

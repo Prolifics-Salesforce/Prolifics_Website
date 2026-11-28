@@ -163,14 +163,14 @@ PJS = open(os.path.join(HERE, "pages.js"), encoding="utf-8").read()
 
 def shell(title, desc, body, crumb):
     robots = "" if FINAL else '<meta name="robots" content="noindex, nofollow">'
-    return ('<!doctype html><html lang="en"><head><meta charset="utf-8"><meta name="viewport" content="width=device-width, initial-scale=1">%s'
+    return ('<!doctype html><html lang="en"><head><meta charset="utf-8"><meta name="viewport" content="width=device-width, initial-scale=1">%s%s'
             '<title>%s | Prolifics</title><meta name="description" content="%s">'
             '<script>document.documentElement.className+=" js"</script><meta name="theme-color" content="#FFFFFF"><link rel="icon" href="assets/favicon.png">'
             '<link rel="preconnect" href="https://fonts.googleapis.com"><link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>'
             '<link href="https://fonts.googleapis.com/css2?family=Inter+Tight:wght@500;600;700;800&family=Inter:wght@400;500;600&display=swap" rel="stylesheet">'
-            '<style>%s%s</style></head><body class="inner">'
+            '<style>%s%s</style></head><body class="inner">%s'
             '<a class="skip" href="#main">Skip to content</a>%s%s%s<main id="main">%s</main>%s<script>%s%s</script></body></html>'
-            % (robots, E(title), E(desc), H.CSS, PCSS, H.header(), H.drawer(), crumbs(crumb), body, H.footer(), H.JS, PJS))
+            % (H.GTM_HEAD, robots, E(title), E(desc), H.CSS, PCSS, H.GTM_BODY, H.header(), H.drawer(), crumbs(crumb), body, H.footer(), H.JS, PJS))
 
 # ---------------------------------------------------------------- 1. Services landing
 def services():
