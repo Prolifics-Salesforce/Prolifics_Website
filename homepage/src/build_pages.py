@@ -137,7 +137,7 @@ def hs_form(key=None):
             '<div class="lf-hp" aria-hidden="true"><input type="text" name="website_url" tabindex="-1" autocomplete="off"></div>'
             '<button class="btn btn-p" type="submit">Talk to Our Experts</button><div class="lf-m" role="status"></div>'
             '<div class="cf-p">By submitting, you agree that Prolifics may use these details to respond to your request, as described in the '
-            '<a href="https://prolifics.ai/privacy-policy" rel="noopener">Privacy Policy</a>.</div></form>'
+            '<a href="/privacy-policy">Privacy Policy</a>.</div></form>'
             % (key, inp("firstname", "First name", req=True, ac="given-name"), inp("lastname", "Last name", req=True, ac="family-name"),
                inp("email", "Work email", "email", True, "email", "name@company.com"), inp("phone", "Phone", "tel", ac="tel"),
                inp("company", "Company", ac="organization"), inp("jobtitle", "Job title", ac="organization-title"),

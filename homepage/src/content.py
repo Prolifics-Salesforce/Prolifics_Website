@@ -142,13 +142,13 @@ ABOUT = [
 ]
 
 # Resources menu (27 Nov 2026): the library types open the live library on /resources already filtered; Happenings
-# moved here from the main menu. Videos is the Prolifics YouTube channel, as on prolifics.ai.
+# moved here from the main menu. Every item opens a page on this site; the content behind each comes from HubSpot.
 RESOURCES_MENU = [
     ("Library", [("Resource Center", "Guides, library and case studies in one place", "/resources"), ("Blogs", "Practical thinking on AI, data and platforms", "/resources?type=blog#library"),
                  ("Case Studies", "Published client results", "/resources?type=case-study#library"), ("News", "Partner and company news", "/resources?type=news#library"),
                  ("One Pagers", "Short overviews of what we offer", "/resources?type=one-pager#library")]),
-    ("Events and more", [("Events", "Events, webinars and campaigns", "/events"), ("Planning Guides", "Questions to answer before you start", "/resources?type=planning-guide#guides"),
-                         ("Videos", "Prolifics on YouTube", "https://www.youtube.com/@ProlificsTV")]),
+    ("Events and more", [("Events", "Events, webinars and campaigns", "/events"), ("Planning Guides", "Questions to answer before you start", "/resources?type=planning-guide#library"),
+                         ("Videos", "Watch Prolifics videos", "/resources?type=video#library")]),
 ]
 
 PARTNERS = ["IBM", "Salesforce", "ServiceNow", "SAP", "Microsoft", "Boomi", "AWS", "MuleSoft", "Databricks", "Red Hat",
@@ -253,8 +253,7 @@ FOOTER = [
     ("Company", [("About Us", "/about"), ("Leadership", "/about/leadership"), ("Careers", "/about/careers"), ("Locations", "/about/locations"),
                  ("Resource Center", "/resources"), ("Events", "/events"), ("Contact", "/contact")]),
 ]
-LEGAL = [("Legal Notice", "https://prolifics.ai/legal-notice"), ("Privacy Policy", "https://prolifics.ai/privacy-policy"),
-         ("Cookie Policy", "https://prolifics.ai/cookie-policy"), ("CCPA", "https://prolifics.ai/ccpa")]
+LEGAL = [("Legal Notice", "/legal-notice"), ("Privacy Policy", "/privacy-policy"), ("Cookie Policy", "/cookie-policy")]   # pages on this site
 
 SOL_IMG = {"Agentic Enterprise": "s_agentic", "Customer & Revenue": "s_customer", "Operations & Service": "s_ops",
            "Modernize": "s_modern", "Assure": "s_assure", "Industry Solutions": "s_industry"}

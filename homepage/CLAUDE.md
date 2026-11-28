@@ -118,6 +118,21 @@ Both previews redirect inner pages (/services/..., /solutions/..., /about, /cont
    `generate_lead` to the dataLayer after a successful form submission, with `form_name` `website_contact` or
    `event_registration` and nothing the visitor typed. Every navigation is a full page load, so no virtual page
    views. There is no cookie consent banner yet.
+23. Everything under Resources and Events is HubSpot only, and nothing links off the site (28 Nov 2026).
+   - `/resources` has no coded content: the 44 case study cards and the three coded planning guides and their
+     pages are gone. Old guide addresses redirect to the same guides in HubSpot (`/resources/article/<slug>`).
+   - Posts open at `/resources/article/<slug>`, table rows (one pagers, videos) at `/resources/item/<slug>`. A video
+     plays in an embedded player and a file is a Download button; a visitor is never sent to the row's link.
+   - `/api/resources` reads every page of published posts, takes the type from the tag, accepts underscores in
+     slugs, and is cached about a minute in total (30 s in memory, 30 s at the edge).
+   - `src/links.py`: both builders pass every page through `delink()`, which rewrites or removes links to
+     prolifics.ai, casestudies.com, prolifics-testing.com and YouTube (rules at the top of that file), then
+     `check()` stops the build if any link to prolifics.ai remains. It reads the published slugs from HubSpot once
+     per build; without HubSpot the build still works.
+   - `/legal-notice`, `/privacy-policy`, `/cookie-policy` are pages on this site, text in `src/legal.json`, copied
+     from prolifics.ai on 28 Nov 2026. Legal has not reviewed them. There is no CCPA page (prolifics.ai has none).
+   - Case study cards across the site (home, services, industries) are still written in code with their metrics;
+     their links now go to the matching HubSpot article or to the case study library.
 21. Menu and naming (28 Nov 2026): Resources is a dropdown in the header (`RESOURCES_MENU` in content.py,
    `mega_resources()` in build_home.py) and Happenings sits inside it, renamed Events. Visitors see "Events" and the
    addresses are `/events` and `/events/<slug>`; `/happenings` addresses redirect there. Only the name changed: the

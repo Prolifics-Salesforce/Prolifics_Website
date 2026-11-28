@@ -23,6 +23,21 @@
    "permanent": false
   },
   {
+   "source": "/resources/forward-deployed-ai-vs-consulting",
+   "destination": "/resources/article/forward-deployed-ai-vs-consulting",
+   "permanent": false
+  },
+  {
+   "source": "/resources/ai-data-readiness",
+   "destination": "/resources/article/ai-data-readiness",
+   "permanent": false
+  },
+  {
+   "source": "/resources/enterprise-ai-evaluation",
+   "destination": "/resources/article/enterprise-ai-evaluation",
+   "permanent": false
+  },
+  {
    "source": "/solutions",
    "destination": "/services",
    "permanent": false
@@ -41,6 +56,10 @@
   {
    "source": "/resources/article/:slug",
    "destination": "/resources/article"
+  },
+  {
+   "source": "/resources/item/:slug",
+   "destination": "/resources/item"
   }
  ]
 }

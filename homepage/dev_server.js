@@ -32,6 +32,7 @@ http.createServer((req, res) => {
   if (/^\/happenings(\/.*)?$/.test(url)) { res.statusCode = 307; res.setHeader("Location", url.replace("/happenings", "/events")); return res.end(); }
   if (/^\/events\/[^/]+\/?$/.test(url)) url = "/events/detail";   // same rewrites as dist/vercel.json
   if (/^\/resources\/article\/[^/]+\/?$/.test(url)) url = "/resources/article";
+  if (/^\/resources\/item\/[^/]+\/?$/.test(url)) url = "/resources/item";
   if (handler) {
     let raw = ""; req.on("data", (c) => (raw += c));
     req.on("end", () => {

@@ -6,6 +6,7 @@ consulting style. Copy comes from src/ref.json (extracted by extract_ref.py), en
 company figures and group firms (content.py), Salesforce GTM content (sf_data.json) and published case studies
 (cases.py). The five pages Mac reviewed keep their own builders in build_pages.py."""
 import os, re, json, sys, shutil
+import links as L
 from PIL import Image
 import build_pages as P
 from build_pages import H, E, arrow, img, icon, crumbs, ctas, subnav, sec, steps, table, faq, example, related, band, contact, engage, sprint, logo, shell
@@ -500,32 +501,19 @@ IND_LABEL = {"banking": "Banking & Finance", "healthcare": "Healthcare & Life Sc
              "government": "Government & Public Sector", "legal": "Legal", "emerging": "Emerging Markets", "other": "Other industries"}
 
 def resources_page():
-    page = REF["/resources"]
-    guides = "".join('<a class="gd2" href="%s" data-r><span class="gd2-im">%s</span><span class="gd2-k">Planning guide</span><b>%s</b><span>%s</span></a>' % (u, img(im, ""), E(t), E(d)) for t, d, u, im in GUIDES)
-    order = [k for k in LIB]
-    used = []
-    for k in order:
-        if LIB[k]["url"] not in [LIB[x]["url"] for x in used]: used.append(k)
-    inds = [i for i in IND_LABEL if any(LIB[k]["ind"][0] == i for k in used)]
-    chips = ['<button type="button" class="fc2 on" data-f="all" aria-pressed="true">All %d</button>' % len(used)] + ['<button type="button" class="fc2" data-f="%s" aria-pressed="false">%s</button>' % (i, E(IND_LABEL[i])) for i in inds]
-    cards = case_grid(used, 99)
-    for k in used:
-        cards = cards.replace('<a class="cc sw" href="%s"' % LIB[k]["url"], '<a class="cc sw" data-g="%s" href="%s"' % (LIB[k]["ind"][0], LIB[k]["url"]), 1)
-    body = (P.hero("Resource Center", page["h1"], lead_of(page), "r03", (str(len(used)), "published case studies, filterable by industry"), ("Case studies", "#cases"))
-            + subnav([("guides", "Planning guides"), ("library", "Library"), ("cases", "Case studies")], ("Talk to Our Experts", "/contact"))
-            + stack("guides", "Planning guides", "Questions to answer before you start", "", '<div class="gd2s">%s</div>' % guides)
-            + stack("library", "Library", "Blogs, case studies and news from Prolifics", "Articles, one pagers and videos from Prolifics, newest first. Filter by type or search by topic.", library())
-            + '<section class="ps alt" id="cases"><div class="wrap"><header class="ps-h wide" data-r><p class="eyebrow">Case studies</p><h2>Published results from Prolifics and its group companies</h2>'
-              '<p class="ps-p">Each card links to the published case study. Filter by industry.</p></header><div class="fcs2" role="group" aria-label="Filter by industry">%s</div><div id="cs-list">%s</div>'
-              '<p class="note"><a class="lnk" href="#library">Browse every case study in the library %s</a></p></div></section>' % ("".join(chips), cards, arrow())
-            + contact("Discuss your priorities", "Connect these planning questions to your delivery priorities across AI, data, Salesforce, ServiceNow and SAP.")
+    # Everything on this page comes from HubSpot through /api/resources: no case study or guide is written in code.
+    body = (P.hero("Resource Center", "Insights, case studies and guides from Prolifics",
+                   "Blogs, news, case studies, planning guides, one pagers and videos from Prolifics teams, in one library.", "r03", None, ("Browse the library", "#library"))
+            + stack("library", "Library", "Browse the library", "Newest first. Filter by type or search by topic.", library())
+            + contact("Discuss your priorities", "Connect what you find here to your delivery priorities across AI, data, Salesforce, ServiceNow and SAP.")
             + rs_assets())
-    return shell("Resource Center", page["desc"], body, [("Home", "/"), ("Resources", None)])
+    return shell("Resource Center", "Blogs, news, case studies, planning guides, one pagers and videos from Prolifics.", body, [("Home", "/"), ("Resources", None)])
 
 # The library and the article page are filled in the browser by resources.js from /api/resources, which reads the
 # HubSpot blog "Resources" and the HubDB table resource_items. A post or row published in HubSpot shows here within
 # about five minutes; nothing needs rebuilding. The page builds the same whether HubSpot has content or not.
-# dist/vercel.json rewrites /resources/article/<slug> to the one article shell.
+# dist/vercel.json rewrites /resources/article/<slug> (a blog post) and /resources/item/<slug> (a one pager or a
+# video) to their shells. Both shells are the same page: the script on it reads the slug from the address.
 RS_CSS = open(os.path.join(HERE, "resources.css"), encoding="utf-8").read()
 RS_JS = open(os.path.join(HERE, "resources.js"), encoding="utf-8").read()
 def rs_assets(): return "<style>%s</style><script>%s</script>" % (RS_CSS, RS_JS)
@@ -541,7 +529,7 @@ def library():
 def resource_article():
     body = ('<section class="rs-top"><div class="wrap"><p class="rs-note" id="rs-wait">Loading</p>'
             '<article class="rs-art" id="rs-article" hidden><p class="kick" id="rs-type"></p><h1 id="rs-title"></h1><p class="rs-date" id="rs-date"></p>'
-            '<figure class="rs-fig" id="rs-fig" hidden></figure><div class="rs-body" id="rs-body"></div>'
+            '<p class="ph-lead rs-sum" id="rs-sum" hidden></p><figure class="rs-fig" id="rs-fig" hidden></figure><div class="rs-body" id="rs-body"></div>'
             '<a class="lnk" href="/resources#library">All resources %s</a></article>'
             '<noscript><p class="rs-note">Turn on JavaScript to read this resource, or <a href="/contact">contact us</a>.</p></noscript></div></section>'
             '<section class="rs-rel" id="rs-rel" hidden><div class="wrap"><h2 id="rs-rel-h">More resources</h2><div class="rs-list" id="rs-rel-list"></div></div></section>'
@@ -550,23 +538,16 @@ def resource_article():
             + rs_assets())
     return shell("Resource Center", "Blogs, case studies and news from Prolifics.", body, [("Home", "/"), ("Resources", "/resources"), ("Article", None)])
 
-def guide_page(path):
-    page = REF[path]; s = page["sections"]
-    parts = [x for x in s[1:] if x["h"] and not x["h"].lower().startswith(("explore related",))]
-    toc = "".join('<li><a href="#%s">%s</a></li>' % (slug(x["h"]), E(re.sub(r"^\d+\.\s*", "", x["h"]))) for x in parts)
-    rel = next((x["links"] for x in s if x["h"].lower().startswith("explore related")), [])
-    rel_cards = [(t, "A Prolifics service", u) for t, u in rel if u.startswith("/services")][:3]
-    content = "".join('<section class="dblk art" id="%s"><h2>%s</h2>%s</section>' % (slug(x["h"]), E(x["h"]), "".join("<p>%s</p>" % E(p) for p in x["p"])) for x in parts)
-    content += related([(t, SVC[u][2] and PR[SVC[u][0]]["name"], u) if u in SVC else (t, "", u) for t, d, u in rel_cards], "Related services")
-    other = [(t, d, u) for t, d, u, im in GUIDES if u != path]
-    content += related(other, "More planning guides")
-    im = next(im for t, d, u, im in GUIDES if u == path)
-    body = ('<section class="ph slim"><div class="wrap ph-in"><div class="ph-t"><p class="kick">Planning guide</p><h1>%s</h1><p class="ph-lead">%s</p></div><figure class="gfig">%s</figure></div></section>'
-            % (E(page["h1"]), E(lead_of(page)), img(im, "", "", True))
-            + '<div class="detail"><div class="wrap det-in"><aside class="side"><nav class="toc" aria-label="In this guide"><p class="side-h">In this guide</p><ul>%s</ul></nav>'
-              '<a class="side-cta" href="/contact"><b>Plan with an expert</b><span>Talk to Our Experts %s</span></a></aside><div class="det-c">%s</div></div></div>' % (toc, arrow(), content)
-            + contact("Discuss your priorities", "Connect these planning questions to your delivery priorities across AI, data, Salesforce, ServiceNow and SAP."))
-    return shell(page["h1"], page["desc"], body, [("Home", "/"), ("Resources", "/resources"), (page["h1"], None)])
+# Legal pages (28 Nov 2026): the text of the Legal Notice, Privacy Policy and Cookie Policy as published on
+# prolifics.ai on that day, kept in legal.json so the footer and the form link to pages on this site. Legal should
+# review them before launch; to update one, edit legal.json.
+LEGAL_PAGES = json.load(open(os.path.join(HERE, "legal.json"), encoding="utf-8"))
+
+def legal_page(key):
+    page = LEGAL_PAGES[key]
+    body = ('<section class="rs-top"><div class="wrap"><article class="rs-art"><p class="kick">Legal</p><h1>%s</h1><div class="rs-body">%s</div></article></div></section>'
+            '<style>%s</style>' % (E(page["title"]), page["html"], RS_CSS))
+    return shell(page["title"], "%s for the Prolifics website." % page["title"], body, [("Home", "/"), (page["title"], None)])
 
 def contact_page():
     page = REF["/contact"]
@@ -686,8 +667,8 @@ def all_pages():
                   "about/social-impact": lambda: simple_about("/about/social-impact", "r02", "Social Impact"),
                   "about/esg": lambda: simple_about("/about/esg", "i_powerlines_1", "ESG Vision"),
                   "partnerships": partnerships_page, "resources": resources_page, "contact": contact_page, "thank-you": thanks_page,
-                  "events": happenings_page, "events/detail": happening_detail, "resources/article": resource_article})
-    for t, d, u, im in GUIDES: pages[u.lstrip("/")] = (lambda u=u: guide_page(u))
+                  "events": happenings_page, "events/detail": happening_detail, "resources/article": resource_article, "resources/item": resource_article})
+    for k in LEGAL_PAGES: pages[k] = (lambda k=k: legal_page(k))
     pages["group"] = group_landing
     for k in GROUP_PAGES: pages["group/" + k] = (lambda k=k: group_page(k))
     return pages
@@ -714,7 +695,7 @@ if __name__ == "__main__":
                          or (GROUP_PAGES[path[6:]]["form"] if path.startswith("group/") else None)
                          or ("solutions" if path.startswith("solutions") else "general"))
         out, n, b = optimize(fn(), os.path.join(HERE, "img2"), os.path.join(DIST, "assets", "img"))
-        out = P.absolutize(out)
+        out = L.delink(P.absolutize(out)); L.check(out, "/" + path)
         d = os.path.join(DIST, path); os.makedirs(d, exist_ok=True)
         open(os.path.join(d, "index.html"), "w", encoding="utf-8").write(out)
         text = re.sub(r"<(script|style)[^>]*>.*?</\1>", " ", out, flags=re.S); vis = re.sub(r"<[^>]+>", " ", text)
@@ -725,11 +706,16 @@ if __name__ == "__main__":
           # Solutions removed from the site (Mac, 23 Nov 2026): old links land on Services
           "redirects": [{"source": "/happenings", "destination": "/events", "permanent": False},   # renamed to Events, 28 Nov 2026
                         {"source": "/happenings/:slug", "destination": "/events/:slug", "permanent": False},
+                        # the planning guides written in code were removed 28 Nov 2026: the same guides are now posts in HubSpot
+                        {"source": "/resources/forward-deployed-ai-vs-consulting", "destination": "/resources/article/forward-deployed-ai-vs-consulting", "permanent": False},
+                        {"source": "/resources/ai-data-readiness", "destination": "/resources/article/ai-data-readiness", "permanent": False},
+                        {"source": "/resources/enterprise-ai-evaluation", "destination": "/resources/article/enterprise-ai-evaluation", "permanent": False},
                         {"source": "/solutions", "destination": "/services", "permanent": False},
                         {"source": "/solutions/:p*", "destination": "/services", "permanent": False}],
           # every happening, and every library article, shares one page shell; the script on it reads the slug from the address
           "rewrites": [{"source": "/events/:slug", "destination": "/events/detail"},
-                       {"source": "/resources/article/:slug", "destination": "/resources/article"}]}
+                       {"source": "/resources/article/:slug", "destination": "/resources/article"},
+                       {"source": "/resources/item/:slug", "destination": "/resources/item"}]}
     json.dump(vc, open(os.path.join(DIST, "vercel.json"), "w"), indent=1)
     shutil.copytree(os.path.join(HERE, "api"), os.path.join(DIST, "api"), dirs_exist_ok=True)   # /api/lead: sends form submissions to HubSpot
     print("%d pages, dashes %d, exclamation %d" % (len(pages) + 1, total_d, total_x))

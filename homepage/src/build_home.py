@@ -276,7 +276,7 @@ def cta():
 
 def footer():
     cols = "".join('<div class="fc-c"><h4>%s</h4><ul>%s</ul></div>' % (E(h), "".join('<li><a href="%s">%s</a></li>' % (u, E(t)) for t, u in links)) for h, links in FOOTER)
-    legal = "".join('<li><a href="%s" rel="noopener">%s</a></li>' % (u, E(t)) for t, u in LEGAL)
+    legal = "".join('<li><a href="%s">%s</a></li>' % (u, E(t)) for t, u in LEGAL)
     return ('<footer class="ftr"><div class="wrap"><div class="ftr-big" aria-hidden="true">Vision to Value<span>.</span></div><div class="ftr-t"><div class="ftr-b">'
             '<img src="assets/prolifics-logo-white.png" alt="Prolifics" width="150" height="23"><p>AI, data and forward deployed engineering for the enterprise. Founded in New York in 1978.</p>'
             '<p class="ftr-o">New York, Westbury, Trevose, Orlando, Toronto, London, Borehamwood, Stevenage, Hamburg, Dubai, Hyderabad, Pune</p>'
@@ -338,6 +338,8 @@ if __name__ == "__main__":
     from optimize import optimize
     out, n_img, img_bytes = optimize(page("--final" in sys.argv), os.path.join(HERE, "img2"), os.path.join(DIST, "assets", "img"))
     out = out.replace('href="assets/img/e1978.webp"', 'href="assets/img/e1978.webp"')
+    import links as L
+    out = L.delink(out); L.check(out, "/")
     open(os.path.join(DIST, "index.html"), "w", encoding="utf-8").write(out)
     print("images %d, %.0f KB" % (n_img, img_bytes / 1024))
     paths = ["/services/:p*", "/solutions/:p*", "/solutions", "/industries/:p*", "/industries", "/about/:p*", "/about",
