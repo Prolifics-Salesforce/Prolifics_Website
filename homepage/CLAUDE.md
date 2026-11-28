@@ -99,14 +99,19 @@ Both previews redirect inner pages (/services/..., /solutions/..., /about, /cont
    build_site.py; `dist/vercel.json` rewrites `/happenings/<slug>` to `/happenings/detail`. Rows with status Hidden
    are not shown; Featured first, then by start date, Past last. Registration posts to `/api/lead` with the slug and
    the server looks up that row's form ID. The page heading, intro and layout are in code, not in HubSpot.
-20. Resource library (27 Nov 2026): the "Library" section on `/resources` and the article page
-   `/resources/article/<slug>` show everything in the prolifics.ai resource center (blogs, case studies, news,
-   briefs, one pagers), read live from its public WordPress listing. `src/api/resources.js` fetches and caches it
-   (about five minutes; override the source with `RESOURCES_SOURCE`), cleans article HTML on the server and turns
-   links to other library items into links on this site. `src/resources.js` and `src/resources.css` render the
-   list (type filters, search, load more) and the article. `dist/vercel.json` rewrites `/resources/article/<slug>`
-   to the one shell. Article text is shown as published on prolifics.ai, so the house rules below (dashes, spelling)
-   are not applied to it. The planning guides and the curated case study cards on the page are still built in code.
+20. Resource library (27 Nov 2026, moved to HubSpot 28 Nov 2026): the "Library" section on `/resources` and the
+   article page `/resources/article/<slug>` are managed in HubSpot, the same pattern as Events. Two sources become
+   one list: the blog "Resources" (ID 228825805709; published posts, one of the tags Blog, News, Case Study or
+   Planning Guide, matched by tag name) and the HubDB table `resource_items` (ID 608654483; types One Pager with a
+   PDF link and Video with a YouTube link; status published). `src/api/_resources.js` reads both with
+   `HUBSPOT_ACCESS_TOKEN` (now also has the `content` scope), caches for five minutes and serves the last good copy
+   when HubSpot fails; `src/api/resources.js` filters, searches, pages and cleans the HTML; `src/resources.js` and
+   `src/resources.css` render it. Optional overrides: `HUBSPOT_BLOG_ID`, `HUBDB_RESOURCES_TABLE`. The page builds
+   and renders with zero items. `dist/vercel.json` rewrites `/resources/article/<slug>` to the one shell. Article
+   text is shown as written in HubSpot, so the house rules below are not applied to it. The three planning guides
+   and the curated case study cards on the page are still built in code; remove the coded guides once the same
+   guides are published in HubSpot, or they will show twice. The first version read prolifics.ai's WordPress
+   listing directly; that was replaced.
 21. Menu and naming (28 Nov 2026): Resources is a dropdown in the header (`RESOURCES_MENU` in content.py,
    `mega_resources()` in build_home.py) and Happenings sits inside it, renamed Events. Visitors see "Events" and the
    addresses are `/events` and `/events/<slug>`; `/happenings` addresses redirect there. Only the name changed: the

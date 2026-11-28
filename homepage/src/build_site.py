@@ -514,7 +514,7 @@ def resources_page():
     body = (P.hero("Resource Center", page["h1"], lead_of(page), "r03", (str(len(used)), "published case studies, filterable by industry"), ("Case studies", "#cases"))
             + subnav([("guides", "Planning guides"), ("library", "Library"), ("cases", "Case studies")], ("Talk to Our Experts", "/contact"))
             + stack("guides", "Planning guides", "Questions to answer before you start", "", '<div class="gd2s">%s</div>' % guides)
-            + stack("library", "Library", "Blogs, case studies and news from Prolifics", "Everything published in the Prolifics resource center, newest first. Filter by type or search by topic.", library())
+            + stack("library", "Library", "Blogs, case studies and news from Prolifics", "Articles, one pagers and videos from Prolifics, newest first. Filter by type or search by topic.", library())
             + '<section class="ps alt" id="cases"><div class="wrap"><header class="ps-h wide" data-r><p class="eyebrow">Case studies</p><h2>Published results from Prolifics and its group companies</h2>'
               '<p class="ps-p">Each card links to the published case study. Filter by industry.</p></header><div class="fcs2" role="group" aria-label="Filter by industry">%s</div><div id="cs-list">%s</div>'
               '<p class="note"><a class="lnk" href="#library">Browse every case study in the library %s</a></p></div></section>' % ("".join(chips), cards, arrow())
@@ -523,7 +523,8 @@ def resources_page():
     return shell("Resource Center", page["desc"], body, [("Home", "/"), ("Resources", None)])
 
 # The library and the article page are filled in the browser by resources.js from /api/resources, which reads the
-# corporate site (prolifics.ai) live. A post published there shows here within minutes; nothing needs rebuilding.
+# HubSpot blog "Resources" and the HubDB table resource_items. A post or row published in HubSpot shows here within
+# about five minutes; nothing needs rebuilding. The page builds the same whether HubSpot has content or not.
 # dist/vercel.json rewrites /resources/article/<slug> to the one article shell.
 RS_CSS = open(os.path.join(HERE, "resources.css"), encoding="utf-8").read()
 RS_JS = open(os.path.join(HERE, "resources.js"), encoding="utf-8").read()

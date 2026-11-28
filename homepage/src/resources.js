@@ -1,4 +1,4 @@
-/* Resource Center library: fills the list on /resources and the article page from /api/resources (live from prolifics.ai).
+/* Resource Center library: fills the list on /resources and the article page from /api/resources (HubSpot blog and table).
    Text is always set with textContent. Only the article body is HTML, and the server has cleaned it. */
 (function () {
   var MONTHS = ["January", "February", "March", "April", "May", "June", "July", "August", "September", "October", "November", "December"];
@@ -6,14 +6,16 @@
   function longDate(s) { var m = /^(\d{4})-(\d{2})-(\d{2})/.exec(s || ""); return m ? MONTHS[+m[2] - 1] + " " + +m[3] + ", " + m[1] : ""; }
   function get(url) { return fetch(url, { headers: { Accept: "application/json" } }).then(function (r) { return r.json().then(function (j) { return { ok: r.ok, status: r.status, data: j }; }); }); }
   function card(x) {
-    var a = el("a", "rs-c"); a.href = "/resources/article/" + encodeURIComponent(x.slug);
+    var a = el("a", "rs-c"), out = x.open === "link" && x.link;
+    if (out) { a.href = x.link; a.target = "_blank"; a.rel = "noopener"; } else a.href = "/resources/article/" + encodeURIComponent(x.slug);
     var im = el("span", "rs-im");
     if (x.image) { var i = el("img"); i.src = x.image.thumb || x.image.url; i.alt = ""; i.loading = "lazy"; im.appendChild(i); }
     var b = el("span", "rs-b"), m = el("span", "rs-m");
     if (x.type) m.appendChild(el("span", "rs-ty", x.type.label));
     var d = longDate(x.date); if (d) m.appendChild(el("span", "", d));
     b.appendChild(m); b.appendChild(el("strong", "rs-n", x.title)); if (x.excerpt) b.appendChild(el("span", "rs-x", x.excerpt));
-    var g = el("span", "rs-go", "Read "); g.appendChild(el("span", "", "→")); b.appendChild(g);
+    var g = el("span", "rs-go", (x.video ? "Watch" : out ? "Open" : "Read") + " "); g.appendChild(el("span", "", "→")); b.appendChild(g);
+    if (x.video) im.className += " vid";
     a.appendChild(im); a.appendChild(b); return a;
   }
 
@@ -48,9 +50,14 @@
         if (mine !== run) return;
         if (!r.ok) throw new Error("unavailable");
         var d = r.data, items = d.items || [];
+        if (d.type != null && d.type !== st.type && st.type) st.type = d.type;   // "case-studies" in an old link becomes "case-study"
         buildChips(d.types); press();
         if (fresh) list.textContent = "";
-        if (fresh && !items.length) { note(st.q ? "Nothing matches that search. Try a different word." : "There is nothing to show here yet."); return; }
+        if (fresh && !items.length) {
+          note(st.q ? "Nothing matches that search. Try a different word." : st.type ? "There is nothing of this type yet. Please check back soon." : "New resources are on the way. Please check back soon.");
+          form.hidden = !st.q && !st.type; return;
+        }
+        form.hidden = false;
         items.forEach(function (x) { list.appendChild(card(x)); });
         st.pages = d.pages || 1; st.shown += items.length;
         count.textContent = "Showing " + st.shown + " of " + (d.total || st.shown);
@@ -82,8 +89,18 @@
       document.getElementById("rs-type").textContent = x.type ? x.type.label : "Resource";
       document.getElementById("rs-title").textContent = x.title;
       var d = longDate(x.date), when = document.getElementById("rs-date"); if (d) when.textContent = d; else when.hidden = true;
-      if (x.image) { var f = document.getElementById("rs-fig"), im = el("img"); im.src = x.image.url; im.alt = x.image.alt || ""; f.appendChild(im); f.hidden = false; }
-      document.getElementById("rs-body").innerHTML = x.body || "";
+      var f = document.getElementById("rs-fig"), body = document.getElementById("rs-body");
+      if (x.video) {   // the id is 11 letters, digits, hyphens or underscores, checked on the server
+        var fr = el("iframe"); fr.src = "https://www.youtube-nocookie.com/embed/" + encodeURIComponent(x.video); fr.title = x.title; fr.loading = "lazy";
+        fr.allow = "accelerometer; encrypted-media; picture-in-picture; fullscreen"; fr.allowFullscreen = true; fr.referrerPolicy = "strict-origin-when-cross-origin";
+        f.className += " vid"; f.appendChild(fr); f.hidden = false;
+      } else if (x.image) { var im = el("img"); im.src = x.image.url; im.alt = x.image.alt || ""; f.appendChild(im); f.hidden = false; }
+      body.innerHTML = x.body || "";
+      if (!x.body && x.excerpt) body.appendChild(el("p", "", x.excerpt));
+      if (x.link && /^https?:\/\//i.test(x.link)) {
+        var o = el("a", "btn btn-p rs-open", x.video ? "Watch on YouTube" : "Open the document"); o.href = x.link; o.target = "_blank"; o.rel = "noopener";
+        body.parentNode.insertBefore(o, body.nextSibling);
+      }
       wait.hidden = true; one.hidden = false;
       if (!x.type) return;
       get("/api/resources?type=" + encodeURIComponent(x.type.slug)).then(function (m) {

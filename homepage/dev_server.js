@@ -7,7 +7,7 @@ const http = require("http"), fs = require("fs"), path = require("path");
 const ROOT = __dirname, DIST = path.join(ROOT, "dist"), PORT = Number(process.env.PORT) || 3000;
 const API = { "/api/lead": require(path.join(ROOT, "src", "api", "lead.js")), "/api/happenings": require(path.join(ROOT, "src", "api", "happenings.js")),
               "/api/resources": require(path.join(ROOT, "src", "api", "resources.js")) };
-const KEYS = ["HUBSPOT_ACCESS_TOKEN", "HUBSPOT_TOKEN", "HUBSPOT_FORM_ID", "HUBSPOT_PORTAL_ID", "HUBSPOT_SUBSCRIPTION_ID", "HUBSPOT_INTEREST_PROPERTY", "HUBSPOT_DRY_RUN", "HUBDB_HAPPENINGS_TABLE"];
+const KEYS = ["HUBSPOT_ACCESS_TOKEN", "HUBSPOT_TOKEN", "HUBSPOT_FORM_ID", "HUBSPOT_PORTAL_ID", "HUBSPOT_SUBSCRIPTION_ID", "HUBSPOT_INTEREST_PROPERTY", "HUBSPOT_DRY_RUN", "HUBDB_HAPPENINGS_TABLE", "HUBSPOT_BLOG_ID", "HUBDB_RESOURCES_TABLE"];
 const TYPES = { ".html": "text/html; charset=utf-8", ".js": "text/javascript", ".json": "application/json", ".png": "image/png",
                 ".webp": "image/webp", ".jpg": "image/jpeg", ".svg": "image/svg+xml", ".css": "text/css" };
 
