@@ -133,6 +133,12 @@ Both previews redirect inner pages (/services/..., /solutions/..., /about, /cont
      from prolifics.ai on 28 Nov 2026. Legal has not reviewed them. There is no CCPA page (prolifics.ai has none).
    - Case study cards across the site (home, services, industries) are still written in code with their metrics;
      their links now go to the matching HubSpot article or to the case study library.
+24. Search engines (28 Nov 2026): the site is open to them (Mouni's decision, for Google Search Console on the
+   vercel.app address). Builders no longer add noindex; pass `--noindex` to both to block again. Only the bare page
+   shells, `/thank-you` and `/api/*` send noindex (headers in `dist/vercel.json`). `/sitemap.xml` and `/robots.txt`
+   come from `src/api/sitemap.js`: built pages (`_paths.json`, written by build_site.py) plus live HubSpot articles,
+   items and events, on whatever host the request used. robots.txt must not disallow `/api`: Google needs it to
+   render the article and event pages. Search Console is verified through the Tag Manager container.
 21. Menu and naming (28 Nov 2026): Resources is a dropdown in the header (`RESOURCES_MENU` in content.py,
    `mega_resources()` in build_home.py) and Happenings sits inside it, renamed Events. Visitors see "Events" and the
    addresses are `/events` and `/events/<slug>`; `/happenings` addresses redirect there. Only the name changed: the

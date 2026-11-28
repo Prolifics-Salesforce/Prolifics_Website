@@ -1,6 +1,6 @@
 # -*- coding: utf-8 -*-
 """Builds the whole site (22 Nov 2026, Mac: "build the rest") into ../dist after build_home.py.
-   python3 src/build_home.py && python3 src/build_site.py        (add --final to drop noindex)
+   python3 src/build_home.py && python3 src/build_site.py        (add --noindex to keep search engines out)
 Every page of the reference site (prolifics-website.vercel.app/sitemap.xml, 109 URLs) is rebuilt in the approved
 consulting style. Copy comes from src/ref.json (extracted by extract_ref.py), enhanced only with sourced material:
 company figures and group firms (content.py), Salesforce GTM content (sf_data.json) and published case studies
@@ -684,7 +684,7 @@ def assets():
         prep(os.path.join(HERE, "partners", f), os.path.join(DIST, "assets", "partners", f))
 
 if __name__ == "__main__":
-    P.FINAL = "--final" in sys.argv
+    P.FINAL = "--noindex" not in sys.argv
     if not os.path.exists(os.path.join(DIST, "index.html")): sys.exit("Run build_home.py first")
     assets()
     pages = all_pages()
@@ -702,7 +702,13 @@ if __name__ == "__main__":
         dashes = len(re.findall("[–—]", text)) + text.count("&mdash;") + text.count("&ndash;"); ex = vis.count("!")
         total_d += dashes; total_x += ex
         if dashes or ex: print("  %s: dashes %d, exclamation %d" % (path, dashes, ex))
-    vc = {"headers": [{"source": "/(.*)", "headers": [{"key": "X-Robots-Tag", "value": "noindex, nofollow"}]}], "trailingSlash": False,
+    # Search engines (28 Nov 2026): the site is open to them. Only the empty page shells at their bare addresses, the
+    # thank-you page and the API stay out. With --noindex every page is kept out again.
+    NOINDEX = [{"key": "X-Robots-Tag", "value": "noindex, nofollow"}]
+    SHELLS = ["/resources/article", "/resources/item", "/events/detail", "/thank-you"]
+    listed = sorted("/" + p for p in pages if "/" + p not in SHELLS)
+    json.dump(["/"] + listed, open(os.path.join(HERE, "api", "_paths.json"), "w"), indent=0)   # read by /api/sitemap
+    vc = {"headers": ([{"source": s, "headers": NOINDEX} for s in SHELLS + ["/api/(.*)"]] if P.FINAL else [{"source": "/(.*)", "headers": NOINDEX}]), "trailingSlash": False,
           # Solutions removed from the site (Mac, 23 Nov 2026): old links land on Services
           "redirects": [{"source": "/happenings", "destination": "/events", "permanent": False},   # renamed to Events, 28 Nov 2026
                         {"source": "/happenings/:slug", "destination": "/events/:slug", "permanent": False},
@@ -713,7 +719,8 @@ if __name__ == "__main__":
                         {"source": "/solutions", "destination": "/services", "permanent": False},
                         {"source": "/solutions/:p*", "destination": "/services", "permanent": False}],
           # every happening, and every library article, shares one page shell; the script on it reads the slug from the address
-          "rewrites": [{"source": "/events/:slug", "destination": "/events/detail"},
+          "rewrites": [{"source": "/sitemap.xml", "destination": "/api/sitemap"}, {"source": "/robots.txt", "destination": "/api/sitemap?file=robots"},
+                       {"source": "/events/:slug", "destination": "/events/detail"},
                        {"source": "/resources/article/:slug", "destination": "/resources/article"},
                        {"source": "/resources/item/:slug", "destination": "/resources/item"}]}
     json.dump(vc, open(os.path.join(DIST, "vercel.json"), "w"), indent=1)

@@ -1,7 +1,43 @@
 {
  "headers": [
   {
-   "source": "/(.*)",
+   "source": "/resources/article",
+   "headers": [
+    {
+     "key": "X-Robots-Tag",
+     "value": "noindex, nofollow"
+    }
+   ]
+  },
+  {
+   "source": "/resources/item",
+   "headers": [
+    {
+     "key": "X-Robots-Tag",
+     "value": "noindex, nofollow"
+    }
+   ]
+  },
+  {
+   "source": "/events/detail",
+   "headers": [
+    {
+     "key": "X-Robots-Tag",
+     "value": "noindex, nofollow"
+    }
+   ]
+  },
+  {
+   "source": "/thank-you",
+   "headers": [
+    {
+     "key": "X-Robots-Tag",
+     "value": "noindex, nofollow"
+    }
+   ]
+  },
+  {
+   "source": "/api/(.*)",
    "headers": [
     {
      "key": "X-Robots-Tag",
@@ -49,6 +85,14 @@
   }
  ],
  "rewrites": [
+  {
+   "source": "/sitemap.xml",
+   "destination": "/api/sitemap"
+  },
+  {
+   "source": "/robots.txt",
+   "destination": "/api/sitemap?file=robots"
+  },
   {
    "source": "/events/:slug",
    "destination": "/events/detail"

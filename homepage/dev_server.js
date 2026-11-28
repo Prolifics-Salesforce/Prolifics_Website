@@ -6,7 +6,8 @@
 const http = require("http"), fs = require("fs"), path = require("path");
 const ROOT = __dirname, DIST = path.join(ROOT, "dist"), PORT = Number(process.env.PORT) || 3000;
 const API = { "/api/lead": require(path.join(ROOT, "src", "api", "lead.js")), "/api/happenings": require(path.join(ROOT, "src", "api", "happenings.js")),
-              "/api/resources": require(path.join(ROOT, "src", "api", "resources.js")) };
+              "/api/resources": require(path.join(ROOT, "src", "api", "resources.js")),
+              "/api/sitemap": require(path.join(ROOT, "src", "api", "sitemap.js")) };
 const KEYS = ["HUBSPOT_ACCESS_TOKEN", "HUBSPOT_TOKEN", "HUBSPOT_FORM_ID", "HUBSPOT_PORTAL_ID", "HUBSPOT_SUBSCRIPTION_ID", "HUBSPOT_INTEREST_PROPERTY", "HUBSPOT_DRY_RUN", "HUBDB_HAPPENINGS_TABLE", "HUBSPOT_BLOG_ID", "HUBDB_RESOURCES_TABLE"];
 const TYPES = { ".html": "text/html; charset=utf-8", ".js": "text/javascript", ".json": "application/json", ".png": "image/png",
                 ".webp": "image/webp", ".jpg": "image/jpeg", ".svg": "image/svg+xml", ".css": "text/css" };
@@ -23,6 +24,8 @@ function loadEnv() {
 
 http.createServer((req, res) => {
   let url = decodeURIComponent(req.url.split("?")[0]);
+  if (url === "/sitemap.xml") { url = "/api/sitemap"; req.url = "/api/sitemap"; }   // same rewrites as dist/vercel.json
+  if (url === "/robots.txt") { url = "/api/sitemap"; req.url = "/api/sitemap?file=robots"; }
   const handler = API[url];
   if (handler && req.method !== "POST") {
     loadEnv();

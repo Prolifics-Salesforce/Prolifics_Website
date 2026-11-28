@@ -1,7 +1,7 @@
 # -*- coding: utf-8 -*-
 """Inner pages for approval (22 Nov 2026): Services landing, Salesforce practice, Agentforce service detail,
 Industries landing and Healthcare industry detail. Writes into ../dist next to the home page, so run
-build_home.py first:  python3 src/build_home.py && python3 src/build_pages.py   (add --final to drop noindex)
+build_home.py first:  python3 src/build_home.py && python3 src/build_pages.py   (add --noindex to keep search engines out)
 Design direction: consulting style (KPMG, Bain, BCG): white ground, strong type hierarchy, left-hand section
 titles, breadcrumbs and in-page navigation on every page, brand navy for feature bands."""
 import os, re, json, sys
@@ -14,7 +14,7 @@ from logoutil import prep, size
 
 E, arrow, img = H.E, H.arrow, H.img
 HERE, DIST = H.HERE, H.DIST
-FINAL = "--final" in sys.argv
+FINAL = "--noindex" not in sys.argv   # pages are open to search engines unless --noindex is given
 CASE = {c[0]: c for c in CASES}
 PR = {p["k"]: p for p in PRACTICES}
 ASPECT = {}

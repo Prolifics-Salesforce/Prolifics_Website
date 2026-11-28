@@ -1,5 +1,5 @@
 # -*- coding: utf-8 -*-
-"""Builds the Prolifics home page into ../dist. Run: python3 src/build_home.py  (add --final to drop noindex)
+"""Builds the Prolifics home page into ../dist. Run: python3 src/build_home.py  (add --noindex to keep search engines out)
 v2 art direction: full color photography and abstract imagery, editorial layout, animated 48 year hero."""
 import os, re, shutil, json, html, sys
 from content import *
@@ -336,7 +336,7 @@ if __name__ == "__main__":
     for f in ("ibm.svg", "sap.svg"):   # partner logos used by the IBM and SAP standing section
         prep(os.path.join(HERE, "partners", f), os.path.join(DIST, "assets", "partners", f))
     from optimize import optimize
-    out, n_img, img_bytes = optimize(page("--final" in sys.argv), os.path.join(HERE, "img2"), os.path.join(DIST, "assets", "img"))
+    out, n_img, img_bytes = optimize(page("--noindex" not in sys.argv), os.path.join(HERE, "img2"), os.path.join(DIST, "assets", "img"))
     out = out.replace('href="assets/img/e1978.webp"', 'href="assets/img/e1978.webp"')
     import links as L
     out = L.delink(out); L.check(out, "/")
