@@ -145,9 +145,9 @@ ABOUT = [
 # moved here from the main menu. Videos is the Prolifics YouTube channel, as on prolifics.ai.
 RESOURCES_MENU = [
     ("Library", [("Resource Center", "Guides, library and case studies in one place", "/resources"), ("Blogs", "Practical thinking on AI, data and platforms", "/resources?type=blog#library"),
-                 ("Case Studies", "Published client results", "/resources?type=case-studies#library"), ("News", "Partner and company news", "/resources?type=news#library"),
+                 ("Case Studies", "Published client results", "/resources?type=case-study#library"), ("News", "Partner and company news", "/resources?type=news#library"),
                  ("One Pagers", "Short overviews of what we offer", "/resources?type=one-pager#library")]),
-    ("Events and more", [("Events", "Events, webinars and campaigns", "/events"), ("Planning Guides", "Questions to answer before you start", "/resources#guides"),
+    ("Events and more", [("Events", "Events, webinars and campaigns", "/events"), ("Planning Guides", "Questions to answer before you start", "/resources?type=planning-guide#guides"),
                          ("Videos", "Prolifics on YouTube", "https://www.youtube.com/@ProlificsTV")]),
 ]
 

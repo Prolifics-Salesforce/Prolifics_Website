@@ -26,6 +26,22 @@
         more = document.getElementById("rs-more"), count = document.getElementById("rs-count");
     var qs = new URLSearchParams(location.search), st = { type: qs.get("type") || "", q: (qs.get("q") || "").slice(0, 80), page: 1, pages: 1, shown: 0 }, run = 0, chips = false;
     box.value = st.q;
+    /* A type link from the menu shows only that type: the other sections of the page step aside. Case studies and
+       planning guides also have a section written into the page, which stays with its own type. */
+    var ALIAS = { "case-studies": "case-study", "one-pagers": "one-pager", blogs: "blog", videos: "video", "planning-guides": "planning-guide" };
+    var NAMES = { blog: "Blogs", news: "News", "case-study": "Case Studies", "planning-guide": "Planning Guides", "one-pager": "One Pagers", video: "Videos" };
+    var CODED = { "case-study": "cases", "planning-guide": "guides" };
+    st.type = ALIAS[st.type] || st.type;
+    var lib = document.getElementById("library"), head = lib.querySelector("h2"), headText = head ? head.textContent : "", focused = false, landed = false;
+    function focus(on) {
+      focused = on; var keep = on ? CODED[st.type] : null;
+      ["guides", "cases"].forEach(function (id) { var s = document.getElementById(id); if (s) s.hidden = on && id !== keep; });
+      var sn = document.querySelector(".subnav"); if (sn) sn.hidden = on;
+      lib.hidden = false;
+      if (head) head.textContent = on && NAMES[st.type] ? NAMES[st.type] + " from Prolifics" : headText;
+    }
+    function land(id) { if (landed) return; landed = true; var s = document.getElementById(id); if (s && s.scrollIntoView) s.scrollIntoView(); }
+    if (NAMES[st.type]) focus(true);
     function note(msg) { list.textContent = ""; list.appendChild(el("p", "rs-note", msg)); }
     function address() {
       var p = new URLSearchParams(); if (st.type) p.set("type", st.type); if (st.q) p.set("q", st.q);
@@ -36,7 +52,7 @@
       if (chips || !types || !types.length) return; chips = true;
       [{ slug: "", label: "All" }].concat(types).forEach(function (t) {
         var c = el("button", "rs-fc", t.label); c.type = "button"; c.setAttribute("data-t", t.slug);
-        c.addEventListener("click", function () { if (st.type === t.slug) return; st.type = t.slug; address(); load(true); });
+        c.addEventListener("click", function () { if (st.type === t.slug) return; st.type = t.slug; if (focused) focus(!!t.slug); address(); load(true); });
         bar.appendChild(c);
       });
       bar.hidden = false;
@@ -53,6 +69,8 @@
         if (d.type != null && d.type !== st.type && st.type) st.type = d.type;   // "case-studies" in an old link becomes "case-study"
         buildChips(d.types); press();
         if (fresh) list.textContent = "";
+        if (fresh && !items.length && focused && CODED[st.type] && !st.q) { lib.hidden = true; land(CODED[st.type]); return; }   // only the coded section has this type so far
+        if (focused) land(st.type === "planning-guide" ? "guides" : "library");
         if (fresh && !items.length) {
           note(st.q ? "Nothing matches that search. Try a different word." : st.type ? "There is nothing of this type yet. Please check back soon." : "New resources are on the way. Please check back soon.");
           form.hidden = !st.q && !st.type; return;
